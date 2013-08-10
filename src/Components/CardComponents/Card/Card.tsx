@@ -8,12 +8,17 @@ const Card: React.FC<CardProps> = ({ card, cardClick }) => {
   const splitCard = card.split('');
   const value: string = splitCard[0];
   const suit: string = splitCard[1];
-
+  console.log('vals', value, suit);
   return (
     <div
+      data-testid={'card-test'}
       className={styles.card}
       onClick={() => cardClick?.(card)}
-      title={`${cardTypes[value]} of ${cardSuites[suit]}`}
+      title={
+        card === 'BACK'
+          ? 'Back of Card'
+          : `${cardTypes[value]} of ${cardSuites[suit]}`
+      }
     >
       <img src={SvgMap(card)} />
       <span className={`suit ${cardSuites[suit]}`}>

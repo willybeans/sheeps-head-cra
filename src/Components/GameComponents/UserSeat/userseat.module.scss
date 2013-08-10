@@ -1,0 +1,16 @@
+.userSeat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  img {
+    height: 2rem;
+  }
+  .cards {
+    display: flex;
+    flex-direction: row;
+    padding-left: 1rem;
+    div.cardWrapper:not(:first-child) {
+      margin-left: -2rem;
+    }
+  }
+}
