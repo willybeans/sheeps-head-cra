@@ -8,7 +8,7 @@ const Card: React.FC<CardProps> = ({ card, cardClick }) => {
   const splitCard = card.split('');
   const value: string = splitCard[0];
   const suit: string = splitCard[1];
-  console.log('vals', value, suit);
+
   return (
     <div
       data-testid={'card-test'}
@@ -16,7 +16,7 @@ const Card: React.FC<CardProps> = ({ card, cardClick }) => {
       onClick={() => cardClick?.(card)}
       title={
         card === 'BACK'
-          ? 'Back of Card'
+          ? convertCardToEnglish(card)
           : `${cardTypes[value]} of ${cardSuites[suit]}`
       }
     >
