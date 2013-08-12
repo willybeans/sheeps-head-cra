@@ -9,7 +9,7 @@ const UserSeat: React.FC<Player> = player => {
   return (
     <div className={styles.userSeat}>
       <div>{player.id}</div>
-      <img src={Sheep} />
+      <img src={Sheep} alt="Sheep" />
       <div className={styles.cards}>
         {player?.hand?.map((c, i) => {
           return (

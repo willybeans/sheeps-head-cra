@@ -19,7 +19,7 @@ describe('UserSeat', () => {
     const { getByText, getAllByTestId } = render(<UserSeat {...mockPlayer} />);
 
     const playerIdElement = getByText('player1');
-    const cardElements = getAllByTestId('card');
+    const cardElements = getAllByTestId('card-test');
 
     expect(playerIdElement).toBeInTheDocument();
     expect(cardElements.length).toBe(3);
@@ -36,7 +36,7 @@ describe('UserSeat', () => {
   it('renders card components with "BACK" card', () => {
     const { getAllByText } = render(<UserSeat {...mockPlayer} />);
 
-    const backCardElements = getAllByText('BACK');
+    const backCardElements = getAllByText('Back of Card');
 
     expect(backCardElements.length).toBe(3);
   });
