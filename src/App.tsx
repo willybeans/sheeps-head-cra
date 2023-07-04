@@ -1,38 +1,42 @@
-import * as React from "react"
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
+  LandingPage,
+  ErrorPage,
+  GamePage,
+  Fallback
+} from "./Routes/routes";
 
-export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
-          </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
-        </VStack>
-      </Grid>
-    </Box>
-  </ChakraProvider>
-)
+let router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LandingPage />,
+    errorElement: <ErrorPage />
+    // children: [
+    //   {
+    //     path: "",
+    //     element: <Outlet />,
+    //     errorElement: <RootErrorBoundary />,
+    //     children: [
+    //       {
+    //         path: "projects/:projectId",
+    //         element: <Project />,
+    //         errorElement: <ProjectErrorBoundary />,
+    //         loader: projectLoader,
+    //       },
+    //     ],
+    //   },
+    // ],
+  },
+  {
+    path: "games/:gameId",
+    element: <GamePage />,
+  },
+]);
+
+// if (import.meta.hot) {
+//   import.meta.hot.dispose(() => router.dispose());
+// }
+
+export default function App() {
+  return <RouterProvider router={router} fallbackElement={<Fallback />} />;
+}
