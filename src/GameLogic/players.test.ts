@@ -12,12 +12,12 @@ describe('player', () => {
   });
 
   it('should initialize game player properties correctly', () => {
-    expect(gamePlayer.hand).toEqual(['']);
+    expect(gamePlayer.hand).toEqual([]);
     expect(gamePlayer.score).toBe(0);
     expect(gamePlayer.wonCardsTotal).toBe(0);
     expect(gamePlayer.isPicker).toBe(false);
-    expect(gamePlayer.cardToPlay).toEqual({ player: '', card: '' });
-    expect(gamePlayer.wonCards).toEqual(['']);
+    expect(gamePlayer.cardToPlay).toEqual({});
+    expect(gamePlayer.wonCards).toEqual([]);
   });
 
   it('should update the player\'s hand and cardToPlay when playCard is called', () => {
@@ -43,9 +43,9 @@ describe('player', () => {
 
     gamePlayer.resetForNextTurn();
 
-    expect(gamePlayer.hand).toEqual(['']);
+    expect(gamePlayer.hand).toEqual([]);
     expect(gamePlayer.isPicker).toBe(false);
-    expect(gamePlayer.cardToPlay).toEqual({ player: '', card: '' });
+    expect(gamePlayer.cardToPlay).toEqual({});
   });
 
   it('should reset player properties for the next round', () => {
@@ -56,10 +56,10 @@ describe('player', () => {
 
     gamePlayer.resetForNextRound();
 
-    expect(gamePlayer.hand).toEqual(['']);
+    expect(gamePlayer.hand).toEqual([]);
     expect(gamePlayer.isPicker).toBe(false);
-    expect(gamePlayer.cardToPlay).toEqual({ player: '', card: '' });
-    expect(gamePlayer.wonCards).toEqual(['']);
+    expect(gamePlayer.cardToPlay).toEqual({});
+    expect(gamePlayer.wonCards).toEqual([]);
     expect(gamePlayer.wonCardsTotal).toBe(0);
     expect(gamePlayer.score).toBe(10);
   });
@@ -72,10 +72,10 @@ describe('player', () => {
 
     gamePlayer.resetForNewGame();
 
-    expect(gamePlayer.hand).toEqual(['']);
+    expect(gamePlayer.hand).toEqual([]);
     expect(gamePlayer.isPicker).toBe(false);
-    expect(gamePlayer.cardToPlay).toEqual({ player: '', card: '' });
-    expect(gamePlayer.wonCards).toEqual(['']);
+    expect(gamePlayer.cardToPlay).toEqual({});
+    expect(gamePlayer.wonCards).toEqual([]);
     expect(gamePlayer.wonCardsTotal).toBe(0);
     expect(gamePlayer.score).toBe(0);
   });

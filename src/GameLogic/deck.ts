@@ -33,7 +33,7 @@ Jack - 2 points
 9, 8, 7 - no points
 */
 
-const cardScoreValues: Values = {
+export const cardScoreValues: Values = {
   A: 11,
   T: 10,
   K: 4,
@@ -55,7 +55,7 @@ const cardScoreValues: Values = {
 // Eight of Clubs, Eight of Spades, Eight of Hearts
 // Seven of Clubs, Seven of Spades, Seven of Hearts
 
-const cardComparativeValues: Values = {
+export const cardComparativeValues: Values = {
   // trump cards
   QC: 32,
   QS: 31,

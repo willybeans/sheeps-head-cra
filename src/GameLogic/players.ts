@@ -5,9 +5,10 @@ export interface GamePlayer {
   score: number,
   wonCardsTotal: number,
   cardToPlay: TableCard,
-  playCard: Function,
+  playCard: (card: string) => void,
   isPicker: boolean,
   wonCards: string[],
+  makePicker: (cards: string[]) => void,
   getTotalForCards: () => void,
   resetForNextTurn: () => void,
   resetForNextRound: () => void,
@@ -24,15 +25,16 @@ export interface TableCard {
 export function player (id: string): GamePlayer {
   const player = {
     id,
-    hand: [''],
+    hand: [] as string[],
     score: 0,
     wonCardsTotal: 0,
     isPicker: false,
-    cardToPlay: {
-      player: '',
-      card: ''
-    }, // this might belong in the front end
-    wonCards: [''],
+    wonCards: [] as string[],
+    cardToPlay: {} as TableCard, // this might belong in the front end
+    makePicker: (cards: string[]) => {
+      player.isPicker = true,
+      player.wonCards.push(...cards);
+    },
     playCard: (card: string) => {
       const index = player.hand.indexOf(card);
       player.hand.splice(index, 1) // returns new array
@@ -59,16 +61,13 @@ export function player (id: string): GamePlayer {
       })
     },
     resetForNextTurn: () => {
-      player.hand = [''];
+      player.hand = [];
       player.isPicker = false;
-      player.cardToPlay = {
-        player: '',
-        card: ''
-      }
+      player.cardToPlay = {} as TableCard;
     },
     resetForNextRound: () => { // if each round is from setting gameMode to scoring
       player.resetForNextTurn();
-      player.wonCards = [''];
+      player.wonCards = [];
       player.wonCardsTotal = 0;
     },
     resetForNewGame: () => { // wipe all
