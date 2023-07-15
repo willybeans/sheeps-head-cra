@@ -98,7 +98,7 @@ describe('game', () => {
     expect(gameInstance.players[2].wonCards).toEqual([]);
   });
 
-  it('should calculate the score based on the game mode and team scores', () => {
+  it('should calculate the score with multipliers, picker wins all', () => {
     gameInstance.setScoreMode = 'picker';
     gameInstance.players[0].isPicker = true;
     gameInstance.players[0].wonCards = ['TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH' ];
@@ -115,10 +115,95 @@ describe('game', () => {
     expect(gameInstance.players[2].score).toBe(-3);
   });
 
-  it('should reset the players for a new turn', () => {
-    gameInstance.players[0].hand = ['C7', 'D7'];
+  it('should calculate the score with multipliers, other team wins all', () => {
+    gameInstance.setScoreMode = 'picker';
     gameInstance.players[0].isPicker = true;
-    gameInstance.players[0].cardToPlay = { player: 'player1', card: 'C7' };
+    gameInstance.players[0].wonCards = [ ];
+    gameInstance.players[1].wonCards = [ ];
+    gameInstance.players[2].wonCards = ['TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH'];
+
+    gameInstance.secretTeam = ['player1', 'player2'];
+    gameInstance.otherTeam = ['player3'];
+
+    gameInstance.calculateScore();
+
+    expect(gameInstance.players[0].score).toBe(-6);
+    expect(gameInstance.players[1].score).toBe(-1);
+    expect(gameInstance.players[2].score).toBe(3);
+  });
+
+  it('should calculate the score with multipliers, other team wins less than 30', () => {
+    gameInstance.setScoreMode = 'picker';
+    gameInstance.players[0].isPicker = true;
+    gameInstance.players[0].wonCards = ['TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH' ];
+    gameInstance.players[1].wonCards = [ 'TH', 'TH', 'TH' ];
+    gameInstance.players[2].wonCards = ['TH' ];
+
+    gameInstance.secretTeam = ['player1', 'player2'];
+    gameInstance.otherTeam = ['player3'];
+
+    gameInstance.calculateScore();
+
+    expect(gameInstance.players[0].score).toBe(4);
+    expect(gameInstance.players[1].score).toBe(2);
+    expect(gameInstance.players[2].score).toBe(-2);
+  });
+
+  it('should calculate the score with multipliers, picker wins less than 30', () => {
+    gameInstance.setScoreMode = 'picker';
+    gameInstance.players[0].isPicker = true;
+    gameInstance.players[0].wonCards = [ ];
+    gameInstance.players[1].wonCards = [ 'TH', 'TH'  ];
+    gameInstance.players[2].wonCards = ['TH','TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH'];
+
+    gameInstance.secretTeam = ['player1', 'player2'];
+    gameInstance.otherTeam = ['player3'];
+
+    gameInstance.calculateScore();
+
+    expect(gameInstance.players[0].score).toBe(-4);
+    expect(gameInstance.players[1].score).toBe(-2);
+    expect(gameInstance.players[2].score).toBe(2);
+  });
+
+  it('should calculate the score with multipliers, other team loses but with > 30', () => {
+    gameInstance.setScoreMode = 'picker';
+    gameInstance.players[0].isPicker = true;
+    gameInstance.players[0].wonCards = [  'TH', 'TH', 'TH', 'TH', 'TH', 'TH'];
+    gameInstance.players[1].wonCards = [ 'TH', 'TH'  ];
+    gameInstance.players[2].wonCards = ['TH','TH', 'TH', 'TH'];
+
+    gameInstance.secretTeam = ['player1', 'player2'];
+    gameInstance.otherTeam = ['player3'];
+
+    gameInstance.calculateScore();
+
+    expect(gameInstance.players[0].score).toBe(2);
+    expect(gameInstance.players[1].score).toBe(1);
+    expect(gameInstance.players[2].score).toBe(-1);
+  });
+
+  it('should calculate the score with multipliers, secret team loses but with > 30', () => {
+    gameInstance.setScoreMode = 'picker';
+    gameInstance.players[0].isPicker = true;
+    gameInstance.players[0].wonCards = [  'TH', 'TH' ];
+    gameInstance.players[1].wonCards = [ 'TH', 'TH'  ];
+    gameInstance.players[2].wonCards = ['TH','TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH'];
+
+    gameInstance.secretTeam = ['player1', 'player2'];
+    gameInstance.otherTeam = ['player3'];
+
+    gameInstance.calculateScore();
+
+    expect(gameInstance.players[0].score).toBe(-2);
+    expect(gameInstance.players[1].score).toBe(-1);
+    expect(gameInstance.players[2].score).toBe(1);
+  });
+
+  it('should reset the players for a new turn', () => {
+    gameInstance.players[0].hand = ['SH', 'EH'];
+    gameInstance.players[0].isPicker = true;
+    gameInstance.players[0].cardToPlay = { player: 'player1', card: 'SH' };
 
     gameInstance.resetPlayersForNewTurn();
 
@@ -133,9 +218,9 @@ describe('game', () => {
     gameInstance.otherTeam = ['player3'];
     gameInstance.currentPlayer = 2;
     gameInstance.currentCardsOnTable = [
-      { player: 'player1', card: 'C7' },
-      { player: 'player2', card: 'C8' },
-      { player: 'player3', card: 'C9' },
+      { player: 'player1', card: 'SH' },
+      { player: 'player2', card: 'EH' },
+      { player: 'player3', card: 'NH' },
     ];
     gameInstance.newDeck();
 

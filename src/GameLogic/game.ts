@@ -294,7 +294,7 @@ export function game (players: Players): Game {
 
 
       if (secretTeamTotal > 61 && secretTeamTotal < 120) {
-        if (otherPoints < 30) {
+        if (otherTeamTotal < 30) {
           increaseValues(2);
         }
       } else if(secretTeamTotal === 120 || otherTeamTotal === 120) {
