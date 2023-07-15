@@ -84,7 +84,6 @@ If the non-picking team takes all of the tricks, the picker loses three times
 
 // 7, 8, 9, 10, J, Q, K, A
 
-
 /* 
 objects for the game: 
 
@@ -107,39 +106,45 @@ calculates game scores at end of turn
 
 */
 
-// class Player 
-import {createDeck, shuffleDeck, DeckOfCards, cardComparativeValues, cardScoreValues} from './deck';
-import {player, GamePlayer, Players, TableCard} from './players';
+// class Player
+import {
+  createDeck,
+  shuffleDeck,
+  DeckOfCards,
+  cardComparativeValues,
+  cardScoreValues
+} from './deck';
+import { player, GamePlayer, Players, TableCard } from './players';
 import { getPlayerIndex } from './gameUtil';
 
 interface WinningCard extends TableCard {
-  gameValue: number
+  gameValue: number;
 }
 
 export interface Game {
-  players: GamePlayer[],
-  shuffledDeck: string[],
-  currentCardsOnTable: TableCard[],
-  currentPlayer: number,
-  picker: string,
-  secretTeam: string[],
-  otherTeam: string[],
-  blindCards: string[],
-  setScoreMode: "leaster" | "doubler" | "picker", // is this right? picker? im not sure
-  newDeck: () => void,
-  moveToNext: () => void,
-  setPicker: (playerId: string, players: Players) => void,
-  setSecretAndOtherTeam: (namedCard: string) => void,
-  dealCards: () => void,
-  tableReceiveCard: () => void,
-  calculateHandWinner: () => void,
-  calculateScore: () => void,
-  resetPlayersForNewTurn: () => void,
-  resetGameForNewTurn: () => void,
-  resetAll: () => void
+  players: GamePlayer[];
+  shuffledDeck: string[];
+  currentCardsOnTable: TableCard[];
+  currentPlayer: number;
+  picker: string;
+  secretTeam: string[];
+  otherTeam: string[];
+  blindCards: string[];
+  setScoreMode: 'leaster' | 'doubler' | 'picker'; // is this right? picker? im not sure
+  newDeck: () => void;
+  moveToNext: () => void;
+  setPicker: (playerId: string, players: Players) => void;
+  setSecretAndOtherTeam: (namedCard: string) => void;
+  dealCards: () => void;
+  tableReceiveCard: () => void;
+  calculateHandWinner: () => void;
+  calculateScore: () => void;
+  resetPlayersForNewTurn: () => void;
+  resetGameForNewTurn: () => void;
+  resetAll: () => void;
 }
 
-export function game (players: Players): Game {
+export function game(players: Players): Game {
   const game: Game = {
     players: [...players], // this needs to be opt in
     shuffledDeck: [],
@@ -155,8 +160,8 @@ export function game (players: Players): Game {
       game.shuffledDeck = shuffleDeck(deck);
     },
     moveToNext: () => {
-      const current = game.currentPlayer
-      if (current !== game.players.length -1) {
+      const current = game.currentPlayer;
+      if (current !== game.players.length - 1) {
         game.currentPlayer += current;
       } else {
         game.currentPlayer = 0;
@@ -167,54 +172,59 @@ export function game (players: Players): Game {
       // const count = players.length;
       // for(count)
       const index = getPlayerIndex(players, playerId);
-      if(game.blindCards.length > 0) {
-        game.players[index].makePicker(game.blindCards)
+      if (game.blindCards.length > 0) {
+        game.players[index].makePicker(game.blindCards);
         game.blindCards = [];
       }
     },
     setSecretAndOtherTeam: (namedCard: string) => {
       // JD AH AC AS AD
       //when a player picks
-      // 1 The picker states that whoever holds the Jack of Diamonds 
+      // 1 The picker states that whoever holds the Jack of Diamonds
       // is their partner. This is the most common method.
-      // 2 The picker may name the Ace of Hearts, Ace of Clubs, or Ace of Spades 
+      // 2 The picker may name the Ace of Hearts, Ace of Clubs, or Ace of Spades
       // and whoever holds this card becomes their partner.
       players.forEach((player: GamePlayer) => {
-        if(player.id !== game.picker){
-          const inHand: boolean = player.hand.some((card) => {
+        if (player.id !== game.picker) {
+          const inHand: boolean = player.hand.some(card => {
             return card === namedCard;
-          })
+          });
           if (inHand) {
             game.secretTeam.push(player.id);
           } else {
-            game.otherTeam.push(player.id)
+            game.otherTeam.push(player.id);
           }
         } else {
           // push picker to secret team
-          game.secretTeam.push(player.id); 
+          game.secretTeam.push(player.id);
         }
-      })
+      });
     },
     dealCards: () => {
       let cardCount: number = 0;
       const playerCount: number = game.players.length;
       const deck = game.shuffledDeck as DeckOfCards;
-      if(playerCount === 3) {
+      if (playerCount === 3) {
         cardCount = 10;
-      }else       if(playerCount === 4) {
+      } else if (playerCount === 4) {
         cardCount = 7;
-      }      if(playerCount === 5) {
+      }
+      if (playerCount === 5) {
         cardCount = 6;
       }
 
       game.players.forEach((p: GamePlayer) => {
         p.hand.pop();
-      })
+      });
 
-      for(cardCount; cardCount > 0; cardCount--) {
-        for(let playerCount = 0; playerCount < game.players.length; playerCount++) {
+      for (cardCount; cardCount > 0; cardCount--) {
+        for (
+          let playerCount = 0;
+          playerCount < game.players.length;
+          playerCount++
+        ) {
           let card: string | undefined = deck.pop();
-          if(card && card !== '') {
+          if (card && card !== '') {
             game.players[playerCount].hand.push(card);
           }
         }
@@ -222,110 +232,110 @@ export function game (players: Players): Game {
       game.blindCards = deck.splice(0, 2);
     },
     tableReceiveCard: () => {
-      game.players.forEach((p:GamePlayer) => {
+      game.players.forEach((p: GamePlayer) => {
         game.currentCardsOnTable.push(p.cardToPlay);
         p.cardToPlay = {
           player: '',
           card: ''
         };
-      })
+      });
     },
     calculateHandWinner: () => {
       const cards = [...game.currentCardsOnTable];
       const cleanIds: string[] = [];
-      const winningCard: WinningCard = {
-        player: '',
-        card: '',
-        gameValue: 0
-      };
-
-       cards.forEach((x: TableCard)=> {
+      let winningCard = {} as WinningCard;
+      cards.forEach((x: TableCard) => {
         const value = x.card;
         const getCardValue = cardComparativeValues[value];
-        if(getCardValue > winningCard.gameValue) {
-          winningCard.player = x.player,
-          winningCard.card = value,
-          winningCard.gameValue = getCardValue
-          }
-          cleanIds.push(x.card);
-        });
+        if (
+          getCardValue > winningCard?.gameValue ||
+          winningCard?.gameValue === undefined
+        ) {
+          winningCard = {
+            player: x.player,
+            card: value,
+            gameValue: getCardValue
+          };
+        }
+        cleanIds.push(x.card);
+      });
 
-        const winner = getPlayerIndex(players, winningCard.player);
-        game.players[winner].wonCards.push(...cleanIds)
+      const winner = getPlayerIndex(players, winningCard.player);
+      game.players[winner].wonCards.push(...cleanIds);
     },
     calculateScore: (): void => {
-      //cardValues -- dont forget that the gameMode matters with this 
+      //cardValues -- dont forget that the gameMode matters with this
 
       //first total all players cards
-      game.players.forEach((p:GamePlayer) => p.getTotalForCards());
+      game.players.forEach((p: GamePlayer) => p.getTotalForCards());
 
-      //next set the scores based on game modes: 
-      if(game.setScoreMode === 'picker') {
-      // add the scores of the picker and the partner: 
-      // const getSecretTeam = game.secretTeam.map((p:string)=> getPlayerIndex(game.players, p))
-      // this returns an array of each index
-      let secretTeamTotal = 0;
-      let otherTeamTotal = 0;
-      let pickerPoints = 2;
-      let otherPoints = 1;
+      //next set the scores based on game modes:
+      if (game.setScoreMode === 'picker') {
+        // add the scores of the picker and the partner:
+        // const getSecretTeam = game.secretTeam.map((p:string)=> getPlayerIndex(game.players, p))
+        // this returns an array of each index
+        let secretTeamTotal = 0;
+        let otherTeamTotal = 0;
+        let pickerPoints = 2;
+        let otherPoints = 1;
 
-      const increaseValues = (val: number) => {
-        pickerPoints *= val;
-        otherPoints *= val;
-    }
+        const increaseValues = (val: number) => {
+          pickerPoints *= val;
+          otherPoints *= val;
+        };
 
-      game.players.forEach((p:GamePlayer) => {
-        if(game.secretTeam.includes(p.id)) {
-          secretTeamTotal += p.wonCardsTotal;
-        } else {
-          otherTeamTotal += p.wonCardsTotal;
-        }
-      });
-
-      // if secretTeam has more than 61 - picker gets 2 points, partner gets 1
-      // all other players lose 1 point
-
-      //if less, picker loses 2 points, partner loses 1
-      // is there a way to abstract the loop, and pass in values to mess with?
-
-      //If the picking team wins and the other 
-      //team doesn't earn more than 30 card points,
-      // double the points each player wins or loses in this round.
-
-
-      if (secretTeamTotal > 61 && secretTeamTotal < 120) {
-        if (otherTeamTotal < 30) {
-          increaseValues(2);
-        }
-      } else if(secretTeamTotal === 120 || otherTeamTotal === 120) {
-        increaseValues(3);
-      } else {
-        if(secretTeamTotal < 30) {
-          increaseValues(2);
-        }
-      }
-
-      game.players.forEach((p:GamePlayer) => {
-        if(game.secretTeam.includes(p.id)) { //secret team
-          if (secretTeamTotal > 61) {
-            p.isPicker ? p.score += pickerPoints : p.score += otherPoints
-          } else if (otherTeamTotal === 120) { // edge case where partner doesnt get penalty
-            p.isPicker ? p.score -= pickerPoints : p.score -= 1
+        game.players.forEach((p: GamePlayer) => {
+          if (game.secretTeam.includes(p.id)) {
+            secretTeamTotal += p.wonCardsTotal;
           } else {
-            p.isPicker ? p.score -= pickerPoints : p.score -= otherPoints
+            otherTeamTotal += p.wonCardsTotal;
           }
-        } else { // other team
-          otherTeamTotal > 61  ? p.score += otherPoints  : p.score -= otherPoints;
+        });
+
+        // if secretTeam has more than 61 - picker gets 2 points, partner gets 1
+        // all other players lose 1 point
+
+        //if less, picker loses 2 points, partner loses 1
+        // is there a way to abstract the loop, and pass in values to mess with?
+
+        //If the picking team wins and the other
+        //team doesn't earn more than 30 card points,
+        // double the points each player wins or loses in this round.
+
+        if (secretTeamTotal > 61 && secretTeamTotal < 120) {
+          if (otherTeamTotal < 30) {
+            increaseValues(2);
+          }
+        } else if (secretTeamTotal === 120 || otherTeamTotal === 120) {
+          increaseValues(3);
+        } else {
+          if (secretTeamTotal < 30) {
+            increaseValues(2);
+          }
         }
-      });
+
+        game.players.forEach((p: GamePlayer) => {
+          if (game.secretTeam.includes(p.id)) {
+            if (secretTeamTotal > 61) {
+              p.isPicker ? (p.score += pickerPoints) : (p.score += otherPoints);
+            } else if (otherTeamTotal === 120) {
+              // edge case where partner doesnt get penalty
+              p.isPicker ? (p.score -= pickerPoints) : (p.score -= 1);
+            } else {
+              p.isPicker ? (p.score -= pickerPoints) : (p.score -= otherPoints);
+            }
+          } else {
+            otherTeamTotal > 61
+              ? (p.score += otherPoints)
+              : (p.score -= otherPoints);
+          }
+        });
       } else if (game.setScoreMode === 'doubler') {
-
       } else if (game.setScoreMode === 'leaster') {
-
       }
     },
     resetPlayersForNewTurn: () => {
-      game.players.forEach((p:GamePlayer) => p.resetForNextTurn());
+      game.players.forEach((p: GamePlayer) => p.resetForNextTurn());
     },
     resetGameForNewTurn: () => {
       game.picker = '';
@@ -340,12 +350,9 @@ export function game (players: Players): Game {
       game.resetPlayersForNewTurn();
     },
     resetAll: () => {
-      game.players.forEach((p:GamePlayer) => p.resetForNewGame());
+      game.players.forEach((p: GamePlayer) => p.resetForNewGame());
       game.resetGameForNewTurn();
     }
-  }
+  };
   return game;
 }
-
-
-

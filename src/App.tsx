@@ -1,14 +1,9 @@
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-import {
-  LandingPage,
-  ErrorPage,
-  GamePage,
-  Fallback
-} from "./Routes/routes";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { LandingPage, ErrorPage, GamePage, Fallback } from './Routes/routes';
 
 let router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <LandingPage />,
     errorElement: <ErrorPage />
     // children: [
@@ -28,9 +23,9 @@ let router = createBrowserRouter([
     // ],
   },
   {
-    path: "games/:gameId",
-    element: <GamePage />,
-  },
+    path: 'games/:gameId',
+    element: <GamePage />
+  }
 ]);
 
 // if (import.meta.hot) {

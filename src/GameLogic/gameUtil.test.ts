@@ -1,11 +1,11 @@
 import { getPlayerIndex } from './gameUtil';
-import {player, Players} from './players';
+import { player, Players } from './players';
 
 describe('getPlayerIndex', () => {
   const players: Players = [
     player('player1'),
     player('player2'),
-    player('player3'),
+    player('player3')
   ];
 
   it('should return the correct index of the player', () => {

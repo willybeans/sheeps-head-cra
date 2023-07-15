@@ -1,17 +1,12 @@
 import { game, Game } from './game';
-import {player, Players} from './players';
-
+import { player, Players } from './players';
 
 describe('game', () => {
   let players: Players;
   let gameInstance: Game;
 
   beforeEach(() => {
-    players = [
-      player('player1'),
-      player('player2'),
-      player('player3'),
-    ];
+    players = [player('player1'), player('player2'), player('player3')];
 
     gameInstance = game(players);
   });
@@ -55,13 +50,12 @@ describe('game', () => {
     gameInstance.secretTeam = [];
     gameInstance.otherTeam = [];
 
-    gameInstance.players[1].hand = ['AH', 'QC']
-    gameInstance.players[2].hand = ['KD', 'TS']
+    gameInstance.players[1].hand = ['AH', 'QC'];
+    gameInstance.players[2].hand = ['KD', 'TS'];
 
     gameInstance.setSecretAndOtherTeam('AH');
 
-
-    expect(gameInstance.secretTeam).toEqual(['player1','player2']);
+    expect(gameInstance.secretTeam).toEqual(['player1', 'player2']);
     expect(gameInstance.otherTeam).toEqual(['player3']);
   });
 
@@ -80,20 +74,20 @@ describe('game', () => {
 
   it('should move played cards to the table and calculate the hand winner', () => {
     gameInstance.players[0].cardToPlay = { player: 'player1', card: 'AH' };
-    gameInstance.players[1].cardToPlay = { player: 'player2', card: 'TC' };
+    gameInstance.players[1].cardToPlay = { player: 'player2', card: 'SC' };
     gameInstance.players[2].cardToPlay = { player: 'player3', card: 'KS' };
 
     gameInstance.tableReceiveCard();
 
     expect(gameInstance.currentCardsOnTable).toEqual([
       { player: 'player1', card: 'AH' },
-      { player: 'player2', card: 'TC' },
-      { player: 'player3', card: 'KS' },
+      { player: 'player2', card: 'SC' },
+      { player: 'player3', card: 'KS' }
     ]);
 
     gameInstance.calculateHandWinner();
 
-    expect(gameInstance.players[0].wonCards).toEqual(['AH', 'TC', 'KS']);
+    expect(gameInstance.players[0].wonCards).toEqual(['AH', 'SC', 'KS']);
     expect(gameInstance.players[1].wonCards).toEqual([]);
     expect(gameInstance.players[2].wonCards).toEqual([]);
   });
@@ -101,8 +95,16 @@ describe('game', () => {
   it('should calculate the score with multipliers, picker wins all', () => {
     gameInstance.setScoreMode = 'picker';
     gameInstance.players[0].isPicker = true;
-    gameInstance.players[0].wonCards = ['TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH' ];
-    gameInstance.players[1].wonCards = ['TH', 'TH', 'TH', 'TH', 'TH' ];
+    gameInstance.players[0].wonCards = [
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH'
+    ];
+    gameInstance.players[1].wonCards = ['TH', 'TH', 'TH', 'TH', 'TH'];
     gameInstance.players[2].wonCards = [];
 
     gameInstance.secretTeam = ['player1', 'player2'];
@@ -118,9 +120,22 @@ describe('game', () => {
   it('should calculate the score with multipliers, other team wins all', () => {
     gameInstance.setScoreMode = 'picker';
     gameInstance.players[0].isPicker = true;
-    gameInstance.players[0].wonCards = [ ];
-    gameInstance.players[1].wonCards = [ ];
-    gameInstance.players[2].wonCards = ['TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH'];
+    gameInstance.players[0].wonCards = [];
+    gameInstance.players[1].wonCards = [];
+    gameInstance.players[2].wonCards = [
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH'
+    ];
 
     gameInstance.secretTeam = ['player1', 'player2'];
     gameInstance.otherTeam = ['player3'];
@@ -135,9 +150,18 @@ describe('game', () => {
   it('should calculate the score with multipliers, other team wins less than 30', () => {
     gameInstance.setScoreMode = 'picker';
     gameInstance.players[0].isPicker = true;
-    gameInstance.players[0].wonCards = ['TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH' ];
-    gameInstance.players[1].wonCards = [ 'TH', 'TH', 'TH' ];
-    gameInstance.players[2].wonCards = ['TH' ];
+    gameInstance.players[0].wonCards = [
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH'
+    ];
+    gameInstance.players[1].wonCards = ['TH', 'TH', 'TH'];
+    gameInstance.players[2].wonCards = ['TH'];
 
     gameInstance.secretTeam = ['player1', 'player2'];
     gameInstance.otherTeam = ['player3'];
@@ -152,9 +176,20 @@ describe('game', () => {
   it('should calculate the score with multipliers, picker wins less than 30', () => {
     gameInstance.setScoreMode = 'picker';
     gameInstance.players[0].isPicker = true;
-    gameInstance.players[0].wonCards = [ ];
-    gameInstance.players[1].wonCards = [ 'TH', 'TH'  ];
-    gameInstance.players[2].wonCards = ['TH','TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH'];
+    gameInstance.players[0].wonCards = [];
+    gameInstance.players[1].wonCards = ['TH', 'TH'];
+    gameInstance.players[2].wonCards = [
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH'
+    ];
 
     gameInstance.secretTeam = ['player1', 'player2'];
     gameInstance.otherTeam = ['player3'];
@@ -169,9 +204,9 @@ describe('game', () => {
   it('should calculate the score with multipliers, other team loses but with > 30', () => {
     gameInstance.setScoreMode = 'picker';
     gameInstance.players[0].isPicker = true;
-    gameInstance.players[0].wonCards = [  'TH', 'TH', 'TH', 'TH', 'TH', 'TH'];
-    gameInstance.players[1].wonCards = [ 'TH', 'TH'  ];
-    gameInstance.players[2].wonCards = ['TH','TH', 'TH', 'TH'];
+    gameInstance.players[0].wonCards = ['TH', 'TH', 'TH', 'TH', 'TH', 'TH'];
+    gameInstance.players[1].wonCards = ['TH', 'TH'];
+    gameInstance.players[2].wonCards = ['TH', 'TH', 'TH', 'TH'];
 
     gameInstance.secretTeam = ['player1', 'player2'];
     gameInstance.otherTeam = ['player3'];
@@ -186,9 +221,18 @@ describe('game', () => {
   it('should calculate the score with multipliers, secret team loses but with > 30', () => {
     gameInstance.setScoreMode = 'picker';
     gameInstance.players[0].isPicker = true;
-    gameInstance.players[0].wonCards = [  'TH', 'TH' ];
-    gameInstance.players[1].wonCards = [ 'TH', 'TH'  ];
-    gameInstance.players[2].wonCards = ['TH','TH', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH'];
+    gameInstance.players[0].wonCards = ['TH', 'TH'];
+    gameInstance.players[1].wonCards = ['TH', 'TH'];
+    gameInstance.players[2].wonCards = [
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH',
+      'TH'
+    ];
 
     gameInstance.secretTeam = ['player1', 'player2'];
     gameInstance.otherTeam = ['player3'];
@@ -220,7 +264,7 @@ describe('game', () => {
     gameInstance.currentCardsOnTable = [
       { player: 'player1', card: 'SH' },
       { player: 'player2', card: 'EH' },
-      { player: 'player3', card: 'NH' },
+      { player: 'player3', card: 'NH' }
     ];
     gameInstance.newDeck();
 
@@ -245,7 +289,7 @@ describe('game', () => {
     gameInstance.currentCardsOnTable = [
       { player: 'player1', card: 'AH' },
       { player: 'player2', card: 'KD' },
-      { player: 'player3', card: 'JD' },
+      { player: 'player3', card: 'JD' }
     ];
     gameInstance.newDeck();
     gameInstance.players[0].score = 5;

@@ -3,14 +3,14 @@ interface Cards {
 }
 
 interface Values {
-  [key: string] : number
+  [key: string]: number;
 }
 
 const cardSuites: Cards = {
   D: 'diamonds',
   S: 'spades',
   H: 'hearts',
-  C: 'clubs',
+  C: 'clubs'
 };
 
 const cardTypes: Cards = {
@@ -21,7 +21,7 @@ const cardTypes: Cards = {
   T: '10',
   N: '9',
   E: '8',
-  S: '7',
+  S: '7'
 };
 
 /* 
@@ -42,9 +42,9 @@ export const cardScoreValues: Values = {
   N: 0,
   E: 0,
   S: 0
-}
+};
 
-// Card strength ratings from highest to lowest 
+// Card strength ratings from highest to lowest
 // Queen of Clubs, Queen of Spades, Queen of Hearts, Queen of Diamonds
 // Jack of Clubs, Jack of Spades, Jack of Hearts, Jack of Diamonds
 // Diamond-suited cards A, 10, K, 9, 8, 7
@@ -78,9 +78,9 @@ export const cardComparativeValues: Values = {
   TC: 15,
   TS: 14,
   TH: 13,
-  KC:12,
-  KS:11,
-  KH:10,
+  KC: 12,
+  KS: 11,
+  KH: 10,
   NC: 9,
   NS: 8,
   NH: 7,
@@ -92,34 +92,34 @@ export const cardComparativeValues: Values = {
   SH: 1
 };
 
-export type DeckOfCards = Array<string>
+export type DeckOfCards = Array<string>;
 
-export const createDeck = ():DeckOfCards => {
-  let arr:DeckOfCards = [];
+export const createDeck = (): DeckOfCards => {
+  let arr: DeckOfCards = [];
 
-  for (const suit in Deck.cardSuites)  {
+  for (const suit in Deck.cardSuites) {
     for (const type in Deck.cardTypes) {
-      arr.push(suit+type);
+      arr.push(suit + type);
     }
   }
-  
-  return arr;
-}
 
-export const shuffleDeck = (deck: DeckOfCards):DeckOfCards => {
+  return arr;
+};
+
+export const shuffleDeck = (deck: DeckOfCards): DeckOfCards => {
   let numOfCards: number = 32;
   let shuffledDeck: DeckOfCards = [];
   for (numOfCards; numOfCards >= 1; numOfCards--) {
-    let rndInt = Math.floor(Math.random() * (numOfCards - 0 + 1) + 0)
+    let rndInt = Math.floor(Math.random() * (numOfCards - 0 + 1) + 0);
     if (deck.length === rndInt) {
       rndInt--;
     }
     shuffledDeck.push(deck[rndInt]);
 
-    deck.splice(rndInt, 1)
+    deck.splice(rndInt, 1);
   }
-  return shuffledDeck
-}
+  return shuffledDeck;
+};
 
 export const Deck = {
   cardSuites,
@@ -127,5 +127,5 @@ export const Deck = {
   cardComparativeValues,
   cardScoreValues,
   shuffleDeck,
-  createDeck,
-}
+  createDeck
+};

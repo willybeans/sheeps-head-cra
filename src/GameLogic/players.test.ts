@@ -20,12 +20,15 @@ describe('player', () => {
     expect(gamePlayer.wonCards).toEqual([]);
   });
 
-  it('should update the player\'s hand and cardToPlay when playCard is called', () => {
+  it("should update the player's hand and cardToPlay when playCard is called", () => {
     const newCardToPlay = 'AH';
     gamePlayer.playCard(newCardToPlay);
 
     expect(gamePlayer.hand).not.toContain(newCardToPlay);
-    expect(gamePlayer.cardToPlay).toEqual({ player: 'player1', card: newCardToPlay });
+    expect(gamePlayer.cardToPlay).toEqual({
+      player: 'player1',
+      card: newCardToPlay
+    });
   });
 
   it('should calculate the total score for won cards correctly', () => {
