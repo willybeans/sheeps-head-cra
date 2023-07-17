@@ -1,19 +1,12 @@
-interface Cards {
-  [key: string]: string;
-}
-
-interface Values {
-  [key: string]: number;
-}
-
-const cardSuites: Cards = {
+import { Cards, Values, DeckOfCards } from '../types';
+export const cardSuites: Cards = {
   D: 'diamonds',
   S: 'spades',
   H: 'hearts',
   C: 'clubs'
 };
 
-const cardTypes: Cards = {
+export const cardTypes: Cards = {
   K: 'king',
   J: 'jack',
   Q: 'queen',
@@ -91,8 +84,6 @@ export const cardComparativeValues: Values = {
   SS: 2,
   SH: 1
 };
-
-export type DeckOfCards = Array<string>;
 
 export const createDeck = (): DeckOfCards => {
   let arr: DeckOfCards = [];

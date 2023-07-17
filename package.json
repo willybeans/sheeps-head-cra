@@ -25,7 +25,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --watchAll=false --testTimeout=5000",
+    "test": "react-scripts test --watchAll=false --testTimeout=5000 --passWithNoTests",
+    "test:watch": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --ext .ts src --fix",
@@ -65,6 +66,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^5.0.0",
     "husky": "^8.0.0",

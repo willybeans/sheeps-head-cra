@@ -107,42 +107,16 @@ calculates game scores at end of turn
 */
 
 // class Player
+import { createDeck, shuffleDeck, cardComparativeValues } from './deck';
 import {
-  createDeck,
-  shuffleDeck,
+  GamePlayer,
+  Players,
+  TableCard,
+  WinningCard,
   DeckOfCards,
-  cardComparativeValues,
-  cardScoreValues
-} from './deck';
-import { player, GamePlayer, Players, TableCard } from './players';
+  Game
+} from '../types';
 import { getPlayerIndex } from './gameUtil';
-
-interface WinningCard extends TableCard {
-  gameValue: number;
-}
-
-export interface Game {
-  players: GamePlayer[];
-  shuffledDeck: string[];
-  currentCardsOnTable: TableCard[];
-  currentPlayer: number;
-  picker: string;
-  secretTeam: string[];
-  otherTeam: string[];
-  blindCards: string[];
-  setScoreMode: 'leaster' | 'doubler' | 'picker'; // is this right? picker? im not sure
-  newDeck: () => void;
-  moveToNext: () => void;
-  setPicker: (playerId: string, players: Players) => void;
-  setSecretAndOtherTeam: (namedCard: string) => void;
-  dealCards: () => void;
-  tableReceiveCard: () => void;
-  calculateHandWinner: () => void;
-  calculateScore: () => void;
-  resetPlayersForNewTurn: () => void;
-  resetGameForNewTurn: () => void;
-  resetAll: () => void;
-}
 
 export function game(players: Players): Game {
   const game: Game = {

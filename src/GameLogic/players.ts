@@ -1,26 +1,5 @@
 import { cardScoreValues } from './deck';
-export interface GamePlayer {
-  id: string;
-  hand: string[];
-  score: number;
-  wonCardsTotal: number;
-  cardToPlay: TableCard;
-  playCard: (card: string) => void;
-  isPicker: boolean;
-  wonCards: string[];
-  makePicker: (cards: string[]) => void;
-  getTotalForCards: () => void;
-  resetForNextTurn: () => void;
-  resetForNextRound: () => void;
-  resetForNewGame: () => void;
-}
-
-export type Players = GamePlayer[];
-
-export interface TableCard {
-  player: string;
-  card: string;
-}
+import { GamePlayer, TableCard } from '../types';
 
 export function player(id: string): GamePlayer {
   const player = {
