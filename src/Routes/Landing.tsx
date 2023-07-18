@@ -1,16 +1,9 @@
-import * as React from "react"
-import {
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "../Components/ColorModeSwitcher"
-import { Logo } from "../Logo"
-import { ModalComponent } from "../Components/ModalComponent"
-import { FaPlusCircle } from "react-icons/fa"
+import * as React from 'react';
+import { Box, Text, Link, VStack, Code, Grid } from '@chakra-ui/react';
+import { ColorModeSwitcher } from '../Components/ColorModeSwitcher';
+import { Logo } from '../Logo';
+import { ModalComponent } from '../Components/ModalComponent';
+import { FaPlusCircle } from 'react-icons/fa';
 
 export const Landing = () => (
   <Box>
@@ -33,14 +26,13 @@ export const Landing = () => (
           </Link>
         </VStack>
       </Grid>
-      <ModalComponent 
+      <ModalComponent
         icon={<FaPlusCircle />}
-        title={'Create New Game'} 
+        title={'Create New Game'}
         body={'body text'}
         primaryAction={'Create New Game'}
         secondaryAction={'secondary function cancel'}
       />
     </Box>
   </Box>
-)
-
+);

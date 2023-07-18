@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from 'react';
 import {
   Button,
   Modal,
@@ -9,18 +9,24 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure
-} from "@chakra-ui/react"
+} from '@chakra-ui/react';
 
 interface Props {
-  icon: JSX.Element,
-  title: string,
-  body: string,
-  primaryAction: string,
-  secondaryAction: string
+  icon: JSX.Element;
+  title: string;
+  body: string;
+  primaryAction: string;
+  secondaryAction: string;
 }
 
-export const ModalComponent: React.FC<Props> = ({icon, title, body, primaryAction, secondaryAction,}) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+export const ModalComponent: React.FC<Props> = ({
+  icon,
+  title,
+  body,
+  primaryAction,
+  secondaryAction
+}) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <Button onClick={onOpen}> {icon} Create New Game</Button>
@@ -35,13 +41,15 @@ export const ModalComponent: React.FC<Props> = ({icon, title, body, primaryActio
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3}>
+            <Button colorScheme="blue" mr={3}>
               {primaryAction}
             </Button>
-            <Button colorScheme='red' onClick={onClose}>{secondaryAction}</Button>
+            <Button colorScheme="red" onClick={onClose}>
+              {secondaryAction}
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </>
-  )
-}
+  );
+};
