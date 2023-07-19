@@ -105,7 +105,7 @@ describe('usePlayer', () => {
 
   it('should calculate all won cards totals', () => {
     const { result } = renderHook(() => usePlayer(initialPlayers));
-    const { addWonCard, totalWonCards } = result.current;
+    const { totalWonCards } = result.current;
 
     const player0 = 'player0';
     const cards0 = ['AC', 'KS', 'QS'];
@@ -117,16 +117,32 @@ describe('usePlayer', () => {
     const cards2 = ['JD', 'SS', 'ES'];
 
     act(() => {
-      addWonCard(player0, cards0);
-      addWonCard(player1, cards1);
-      addWonCard(player2, cards2);
       totalWonCards();
     });
 
     const { players } = result.current;
-    expect(players[0].wonCardsTotal).toEqual(18);
-    expect(players[1].wonCardsTotal).toEqual(15);
-    expect(players[2].wonCardsTotal).toEqual(2);
+    players.forEach(player => {
+      expect(player.wonCardsTotal).toBe(0);
+    });
+
+    // Update the players' won cards
+    const { addWonCard } = result.current;
+
+    act(() => {
+      addWonCard(player0, cards0);
+      addWonCard(player1, cards1);
+      addWonCard(player2, cards2);
+    });
+
+    // Calculate total won cards again
+    act(() => {
+      totalWonCards();
+    });
+
+    const updatedPlayers = result.current.players;
+    expect(updatedPlayers[0].wonCardsTotal).toEqual(18);
+    expect(updatedPlayers[1].wonCardsTotal).toEqual(15);
+    expect(updatedPlayers[2].wonCardsTotal).toEqual(2);
   });
 
   it('should reset for the next turn', () => {
