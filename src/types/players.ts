@@ -3,10 +3,10 @@ export interface GamePlayer {
   hand: string[];
   score: number;
   wonCardsTotal: number;
-  cardToPlay: TableCard;
-  playCard: (card: string) => void;
   isPicker: boolean;
   wonCards: string[];
+  cardToPlay: TableCard;
+  playCard: (card: string) => void;
   makePicker: (cards: string[]) => void;
   getTotalForCards: () => void;
   resetForNextTurn: () => void;
@@ -23,4 +23,14 @@ export interface TableCard {
 
 export interface WinningCard extends TableCard {
   gameValue: number;
+}
+
+export interface Player {
+  id: string;
+  hand: string[];
+  score: number;
+  wonCardsTotal: number;
+  isPicker: boolean;
+  wonCards: string[];
+  cardToPlay: TableCard;
 }
