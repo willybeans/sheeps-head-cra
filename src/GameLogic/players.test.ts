@@ -1,4 +1,5 @@
-import { player, GamePlayer } from './players';
+import { player } from './players';
+import { GamePlayer } from '../types';
 
 describe('player', () => {
   let gamePlayer: GamePlayer;

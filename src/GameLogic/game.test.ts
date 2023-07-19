@@ -1,5 +1,6 @@
-import { game, Game } from './game';
-import { player, Players } from './players';
+import { game } from './game';
+import { player } from './players';
+import { Players, Game } from '../types';
 
 describe('game', () => {
   let players: Players;

@@ -39,14 +39,12 @@ const playerReducer = (state: Player[], action: PlayerAction): Player[] => {
     case 'TOTAL_WON_CARDS':
       return state.map((player, index) => {
         let total = 0;
-        console.log('player', index, ' ', player.wonCardsTotal);
         player.wonCards.forEach((c: string) => {
           const split = c.split('');
           const cardType = split[0];
           const suit = split[1]; // this might not matter
           total += cardScoreValues[cardType];
         });
-        console.log('player', index, ' ', total);
 
         return { ...player, wonCardsTotal: total };
       });

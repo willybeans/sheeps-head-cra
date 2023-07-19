@@ -1,5 +1,6 @@
 import { getPlayerIndex } from './gameUtil';
-import { player, Players } from './players';
+import { player } from './players';
+import { Players } from '../types';
 
 describe('getPlayerIndex', () => {
   const players: Players = [
