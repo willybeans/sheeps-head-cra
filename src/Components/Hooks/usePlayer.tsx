@@ -1,12 +1,15 @@
 import { useReducer } from 'react';
 import { cardScoreValues } from '../../GameLogic/deck';
-import { TableCard, Player } from '../../types';
+import { TableCard, Player, PlayerScore } from '../../types';
 
 type PlayerAction =
   | { type: 'SET_HAND'; playerId: string; hand: string[] }
+  | { type: 'SET_TEAMS'; pickedCard: string; picker: string }
+  | { type: 'SET_SCORES'; playerScores: PlayerScore[] }
   | { type: 'MAKE_PICKER'; playerId: string; cards: string[] }
   | { type: 'ADD_WON_CARDS'; playerId: string; cards: string[] }
   | { type: 'PLAY_CARD'; playerId: string; card: string }
+  | { type: 'CLEAR_PLAYED_CARDS' }
   | { type: 'TOTAL_WON_CARDS' }
   | { type: 'RESET_FOR_NEXT_TURN' }
   | { type: 'RESET_FOR_NEXT_ROUND' }
@@ -20,6 +23,30 @@ const playerReducer = (state: Player[], action: PlayerAction): Player[] => {
           ? { ...player, hand: action.hand }
           : player
       );
+    case 'SET_TEAMS':
+      return state.map(player => {
+        if (player.id !== action.picker) {
+          const inHand: boolean = player.hand.some(card => {
+            return card === action.pickedCard;
+          });
+          if (inHand) {
+            return { ...player, onSecretTeam: true };
+          } else {
+            return { ...player, onSecretTeam: false };
+          }
+        } else {
+          return { ...player, onSecretTeam: true };
+        }
+      });
+    case 'SET_SCORES':
+      // this is for doubler
+      return state.map(p => {
+        const player = action.playerScores.find(player => player.id === p.id)!;
+        return {
+          ...p,
+          score: player.score
+        };
+      });
     case 'MAKE_PICKER':
       return state.map(player =>
         player.id === action.playerId
@@ -42,7 +69,6 @@ const playerReducer = (state: Player[], action: PlayerAction): Player[] => {
         player.wonCards.forEach((c: string) => {
           const split = c.split('');
           const cardType = split[0];
-          const suit = split[1]; // this might not matter
           total += cardScoreValues[cardType];
         });
 
@@ -61,10 +87,18 @@ const playerReducer = (state: Player[], action: PlayerAction): Player[] => {
             }
           : player
       );
+    case 'CLEAR_PLAYED_CARDS':
+      return state.map(player => {
+        return {
+          ...player,
+          cardToPlay: {} as TableCard
+        };
+      });
     case 'RESET_FOR_NEXT_TURN':
       return state.map(player => ({
         ...player,
         hand: [],
+        onSecretTeam: false,
         isPicker: false,
         cardToPlay: {} as TableCard
       }));
@@ -73,6 +107,7 @@ const playerReducer = (state: Player[], action: PlayerAction): Player[] => {
         ...player,
         hand: [],
         isPicker: false,
+        onSecretTeam: false,
         cardToPlay: {} as TableCard,
         wonCards: [],
         wonCardsTotal: 0
@@ -82,6 +117,7 @@ const playerReducer = (state: Player[], action: PlayerAction): Player[] => {
         ...player,
         hand: [] as string[],
         isPicker: false,
+        onSecretTeam: false,
         cardToPlay: {} as TableCard,
         wonCards: [] as string[],
         wonCardsTotal: 0,
@@ -103,7 +139,15 @@ const usePlayer = (initialPlayers: Player[]) => {
     dispatch({ type: 'MAKE_PICKER', playerId, cards });
   };
 
-  const addWonCard = (playerId: string, cards: string[]) => {
+  const setTeams = (pickedCard: string, picker: string) => {
+    dispatch({ type: 'SET_TEAMS', pickedCard, picker });
+  };
+
+  const setScores = (playerScores: PlayerScore[]) => {
+    dispatch({ type: 'SET_SCORES', playerScores });
+  };
+
+  const addWonCards = (playerId: string, cards: string[]) => {
     dispatch({ type: 'ADD_WON_CARDS', playerId, cards });
   };
 
@@ -111,7 +155,12 @@ const usePlayer = (initialPlayers: Player[]) => {
     dispatch({ type: 'PLAY_CARD', playerId, card });
   };
 
+  const clearPlayedCards = () => {
+    dispatch({ type: 'CLEAR_PLAYED_CARDS' });
+  };
+
   const totalWonCards = () => {
+    // this should be combined with score
     dispatch({ type: 'TOTAL_WON_CARDS' });
   };
 
@@ -126,10 +175,13 @@ const usePlayer = (initialPlayers: Player[]) => {
   return {
     players,
     setHand,
+    setTeams,
+    setScores,
     makePicker,
-    addWonCard,
+    addWonCards,
     totalWonCards,
     playCard,
+    clearPlayedCards,
     resetForNextTurn,
     resetForNextRound
   };
