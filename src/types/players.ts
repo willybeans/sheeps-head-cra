@@ -29,6 +29,7 @@ export interface Player {
   id: string;
   hand: string[];
   score: number;
+  onSecretTeam: boolean;
   wonCardsTotal: number;
   isPicker: boolean;
   wonCards: string[];

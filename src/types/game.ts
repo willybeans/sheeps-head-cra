@@ -10,7 +10,7 @@ export interface GameBoardProps {
 }
 
 export interface PlayerScore {
-  name: string;
+  id: string;
   score: number;
 }
 

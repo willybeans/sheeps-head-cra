@@ -8,6 +8,7 @@ describe('usePlayer', () => {
       id: 'player0',
       hand: [],
       score: 0,
+      onSecretTeam: true,
       wonCardsTotal: 0,
       isPicker: false,
       wonCards: [],
@@ -17,6 +18,7 @@ describe('usePlayer', () => {
       id: 'player1',
       hand: [],
       score: 0,
+      onSecretTeam: true,
       wonCardsTotal: 0,
       isPicker: false,
       wonCards: [],
@@ -26,6 +28,7 @@ describe('usePlayer', () => {
       id: 'player2',
       hand: [],
       score: 0,
+      onSecretTeam: false,
       wonCardsTotal: 0,
       isPicker: false,
       wonCards: [],
@@ -72,12 +75,12 @@ describe('usePlayer', () => {
 
   it("should add a card to a player's won cards pile", () => {
     const { result } = renderHook(() => usePlayer(initialPlayers));
-    const { addWonCard } = result.current;
+    const { addWonCards } = result.current;
     const playerId = 'player1';
     const cards = ['AH', 'KH'];
 
     act(() => {
-      addWonCard(playerId, cards);
+      addWonCards(playerId, cards);
     });
 
     const { players } = result.current;
@@ -126,12 +129,12 @@ describe('usePlayer', () => {
     });
 
     // Update the players' won cards
-    const { addWonCard } = result.current;
+    const { addWonCards } = result.current;
 
     act(() => {
-      addWonCard(player0, cards0);
-      addWonCard(player1, cards1);
-      addWonCard(player2, cards2);
+      addWonCards(player0, cards0);
+      addWonCards(player1, cards1);
+      addWonCards(player2, cards2);
     });
 
     // Calculate total won cards again
