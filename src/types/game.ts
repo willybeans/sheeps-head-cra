@@ -18,6 +18,17 @@ export interface ScoreboardProps {
   scores: PlayerScore[];
 }
 
+export interface GameState {
+  shuffledDeck: string[];
+  currentCardsOnTable: TableCard[];
+  currentPlayer: number;
+  picker: string;
+  secretTeam: string[];
+  otherTeam: string[];
+  blindCards: string[];
+  setScoreMode: 'leaster' | 'doubler' | 'picker';
+}
+
 export interface Game {
   players: GamePlayer[];
   shuffledDeck: string[];
