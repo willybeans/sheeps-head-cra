@@ -11,7 +11,7 @@ describe('Card', () => {
 
   it('renders card with suit and value', () => {
     const { getByText } = render(<Card cardClick={mockOnClick} card="AD" />);
-    expect(getByText('ace diamonds')).toBeInTheDocument();
+    expect(getByText('ace of diamonds')).toBeInTheDocument();
   });
 
   it('applies suit class based on the suit prop', () => {

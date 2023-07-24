@@ -24,7 +24,7 @@ export function convertCardToEnglish(card: string): string {
   const value: string = cardTypes[splitCard[0]] as CardValues;
   const suit: string = cardSuites[splitCard[1]] as CardSuites;
 
-  return `${value} ${suit} `;
+  return `${value} of ${suit}`;
 }
 
 export function calculateWinner(cards: TableCard[]): {
