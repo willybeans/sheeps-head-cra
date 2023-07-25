@@ -7,8 +7,8 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ scores }) => {
       <h2>Scoreboard</h2>
       <ul>
         {scores?.map((playerScore: PlayerScore) => (
-          <li key={playerScore.name}>
-            {playerScore.name}: {playerScore.score}
+          <li key={playerScore.id}>
+            {playerScore.id}: {playerScore.score}
           </li>
         ))}
       </ul>
