@@ -1,7 +1,9 @@
 import React from 'react';
-import { cardSuites, cardTypes } from '../../GameLogic/deck';
-import { convertCardToEnglish } from '../../GameLogic/gameUtil';
-import { CardProps } from '../../types/';
+import { cardSuites, cardTypes } from '../../../GameLogic/deck';
+import { convertCardToEnglish } from '../../../GameLogic/gameUtil';
+import styles from './card.module.scss';
+import { CardProps } from '../../../types/';
+import { SvgMap } from '../../../utils/svgMap';
 const Card: React.FC<CardProps> = ({ card, cardClick }) => {
   const splitCard = card.split('');
   const value: string = splitCard[0];
@@ -9,13 +11,15 @@ const Card: React.FC<CardProps> = ({ card, cardClick }) => {
 
   return (
     <div
-      className="card"
+      className={styles.card}
       onClick={() => cardClick?.(card)}
       title={`${cardTypes[value]} of ${cardSuites[suit]}`}
     >
+      <img src={SvgMap(card)} />
       <span className={`suit ${cardSuites[suit]}`}>
         {convertCardToEnglish(card)}
       </span>
+
       {/* <span className="value">{value}</span> */}
     </div>
   );

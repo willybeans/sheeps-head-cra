@@ -1,6 +1,6 @@
 import React from 'react';
-import Card from './Card';
-import { TrickPileProps } from '../../types';
+import Card from '../Card/Card';
+import { TrickPileProps } from '../../../types';
 
 const TrickPile: React.FC<TrickPileProps> = ({ cards }) => {
   return (

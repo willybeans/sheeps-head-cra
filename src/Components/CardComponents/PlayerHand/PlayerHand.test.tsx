@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import PlayerHand from './PlayerHand';
-import { cardTypes, cardSuites } from '../../GameLogic/deck';
-import { convertCardToEnglish } from '../../GameLogic/gameUtil';
+import { cardTypes, cardSuites } from '../../../GameLogic/deck';
+import { convertCardToEnglish } from '../../../GameLogic/gameUtil';
 
 describe('PlayerHand', () => {
   const hand = ['SC', 'EC', 'NC', 'JH', 'QH'];
@@ -27,8 +27,9 @@ describe('PlayerHand', () => {
     const cardElements = container.querySelectorAll('.card');
     cardElements.forEach((cardElement, index) => {
       const cardValue = cardElement.textContent;
+
       const cardString = convertCardToEnglish(hand[index]);
-      expect(cardValue).toBe(cardString);
+      expect(cardValue).toEqual(cardString);
     });
   });
 });

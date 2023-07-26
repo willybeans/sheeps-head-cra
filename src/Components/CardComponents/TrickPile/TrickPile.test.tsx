@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import TrickPile from './TrickPile';
-import { convertCardToEnglish } from '../../GameLogic/gameUtil';
+import { convertCardToEnglish } from '../../../GameLogic/gameUtil';
 
 describe('TrickPile', () => {
   const cards = ['SC', 'EC', 'NC', 'JH', 'QH'];
