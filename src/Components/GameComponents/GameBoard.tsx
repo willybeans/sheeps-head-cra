@@ -3,7 +3,7 @@ import PlayerHand from '../CardComponents/PlayerHand/PlayerHand';
 import TrickPile from '../CardComponents/TrickPile/TrickPile';
 import Scoreboard from './Scoreboard';
 import CurrentPlayer from './CurrentPlayer';
-import { Player, TableCard, PlayerScore, ScoreboardProps } from '../../types';
+import { Player, TableCard, PlayerScore, GameState } from '../../types';
 import usePlayer from '../Hooks/usePlayer';
 import useGame from '../Hooks/useGame';
 
@@ -13,7 +13,7 @@ const initialPlayers: Player[] = [
   {
     id: 'player1',
     hand: ['A♠', 'K♠', 'Q♠', 'J♠', '10♠'],
-    score: 0,
+    score: 21,
     wonCardsTotal: 0,
     isPicker: false,
     wonCards: [],
@@ -23,7 +23,7 @@ const initialPlayers: Player[] = [
   {
     id: 'player2',
     hand: ['2♠', '3♠', '4♠', '5♠', '6♠'],
-    score: 0,
+    score: 2,
     wonCardsTotal: 0,
     isPicker: false,
     wonCards: [],
@@ -33,7 +33,7 @@ const initialPlayers: Player[] = [
   {
     id: 'player3',
     hand: ['7♠', '8♠', '9♠', '10♠', 'J♠'],
-    score: 0,
+    score: -1,
     wonCardsTotal: 0,
     isPicker: false,
     wonCards: [],
@@ -42,8 +42,20 @@ const initialPlayers: Player[] = [
   }
 ];
 
+const initialGame: GameState = {
+  shuffledDeck: [],
+  currentCardsOnTable: [],
+  currentPlayer: 0,
+  picker: '',
+  secretTeam: [],
+  otherTeam: [],
+  blindCards: [],
+  setScoreMode: 'picker'
+};
+
 const GameBoard: React.FC = () => {
-  const { players } = usePlayer(initialPlayers);
+  // const { players } = usePlayer(initialPlayers);
+  const { gameState, players } = useGame(initialGame, initialPlayers);
 
   // const [currentPlayer, setCurrentPlayer] = useState(players[0]);
   const [trickCards, setTrickCards] = useState<string[]>([]);
@@ -58,9 +70,9 @@ const GameBoard: React.FC = () => {
       score: Number(p.score)
     }));
     setScores(scoreMap);
-    // let getScores = players.map((p: GamePlayer) => p.score);
-    // setScores([...getScores]);
-  });
+
+    // setTrickCards();
+  }, [players]);
   const playCard = (card: string) => {
     // Logic to handle playing a card in the game
     // Update currentPlayer, trickCards, scores, etc.
@@ -70,9 +82,9 @@ const GameBoard: React.FC = () => {
     <div className="game-board">
       {/* <CurrentPlayer currentPlayer={currentPlayer} players={players} /> */}
       {}
-      <PlayerHand hand={[]} playCard={playCard} />
-      <TrickPile cards={trickCards} />
       <Scoreboard scores={scores} />
+      <TrickPile cards={trickCards} />
+      <PlayerHand hand={[]} playCard={playCard} />
     </div>
   );
 };

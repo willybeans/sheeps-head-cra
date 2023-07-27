@@ -1,9 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import Scoreboard from './Scoreboard';
+import { PlayerScore } from '../../types';
 
 describe('Scoreboard', () => {
-  const scores = [
+  const scores: PlayerScore[] = [
     { id: 'Player1', score: 10 },
     { id: 'Player2', score: 15 },
     { id: 'Player3', score: 8 }
