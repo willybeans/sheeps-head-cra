@@ -1,13 +1,15 @@
 import React from 'react';
 import Card from '../Card/Card';
-import { TrickPileProps } from '../../../types';
+import { TableCard } from '../../../types';
 
-const TrickPile: React.FC<TrickPileProps> = ({ cards }) => {
+interface Props {
+  cards: TableCard[];
+}
+
+const TrickPile: React.FC<Props> = ({ cards }) => {
   return (
     <div className="trick-pile">
-      {cards.map((card, index) => (
-        <Card key={index} card={card} />
-      ))}
+      {cards?.map((card, index) => <Card key={index} card={card.card} />)}
     </div>
   );
 };
