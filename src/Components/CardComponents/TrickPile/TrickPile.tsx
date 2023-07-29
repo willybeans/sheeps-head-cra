@@ -3,7 +3,7 @@ import Card from '../Card/Card';
 import { TableCard } from '../../../types';
 
 interface Props {
-  cards: TableCard[];
+  cards?: TableCard[];
 }
 
 const TrickPile: React.FC<Props> = ({ cards }) => {

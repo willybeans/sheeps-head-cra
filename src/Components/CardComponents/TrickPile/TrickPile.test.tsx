@@ -1,10 +1,13 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 import TrickPile from './TrickPile';
 import { convertCardToEnglish } from '../../../GameLogic/gameUtil';
 
 describe('TrickPile', () => {
-  const cards = ['SC', 'EC', 'NC', 'JH', 'QH'];
+  const cards = [
+    { player: 'player1', card: 'AS' },
+    { player: 'player2', card: 'SS' },
+    { player: 'player3', card: 'ES' }
+  ];
 
   it('renders the correct number of cards', () => {
     const { container } = render(<TrickPile cards={cards} />);
@@ -17,7 +20,7 @@ describe('TrickPile', () => {
     const cardElements = container.querySelectorAll('.card');
     cardElements.forEach((cardElement, index) => {
       const cardValue = cardElement.textContent;
-      const convertedCard = convertCardToEnglish(cards[index]);
+      const convertedCard = convertCardToEnglish(cards[index].card);
       expect(cardValue).toBe(convertedCard);
     });
   });
