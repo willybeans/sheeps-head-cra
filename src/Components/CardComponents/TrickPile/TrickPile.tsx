@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from '../Card/Card';
 import { TableCard } from '../../../types';
+import styles from './trickpile.module.scss';
 
 interface Props {
   cards?: TableCard[];
@@ -8,7 +9,7 @@ interface Props {
 
 const TrickPile: React.FC<Props> = ({ cards }) => {
   return (
-    <div className="trick-pile">
+    <div className={styles.trickpile}>
       {cards?.map((card, index) => <Card key={index} card={card.card} />)}
     </div>
   );

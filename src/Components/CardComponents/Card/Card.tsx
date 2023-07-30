@@ -19,8 +19,6 @@ const Card: React.FC<CardProps> = ({ card, cardClick }) => {
       <span className={`suit ${cardSuites[suit]}`}>
         {convertCardToEnglish(card)}
       </span>
-
-      {/* <span className="value">{value}</span> */}
     </div>
   );
 };
