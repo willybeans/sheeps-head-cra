@@ -19,6 +19,7 @@ export interface ScoreboardProps {
 }
 
 export interface GameState {
+  inPlay: boolean;
   shuffledDeck: string[];
   currentCardsOnTable: TableCard[];
   currentPlayer: number;

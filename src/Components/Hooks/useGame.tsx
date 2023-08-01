@@ -9,6 +9,7 @@ import { TableCard, Player, DeckOfCards, GameState } from '../../types';
 
 type GameAction =
   | { type: 'DEAL_CARDS'; cards: string[] }
+  | { type: 'TOGGLE_IN_PLAY'; inPlay: boolean }
   | { type: 'MOVE_TO_NEXT'; playerCount: number }
   | { type: 'SET_PICKER'; playerId: string }
   | { type: 'TABLE_RECEIVE_CARDS'; cards: TableCard[] }
@@ -24,6 +25,11 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
       return {
         ...state,
         blindCards: [...action.cards]
+      };
+    case 'TOGGLE_IN_PLAY':
+      return {
+        ...state,
+        inPlay: !action.inPlay
       };
     case 'MOVE_TO_NEXT':
       return {
@@ -56,10 +62,10 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
         secretTeam: [],
         otherTeam: [],
         blindCards: []
-        // cardToPlay: {} as TableCard
       };
     case 'RESET_ALL':
       return {
+        inPlay: false,
         shuffledDeck: [],
         currentCardsOnTable: [],
         currentPlayer: 0,
@@ -68,7 +74,6 @@ const gameReducer = (state: GameState, action: GameAction): GameState => {
         otherTeam: [],
         blindCards: [],
         setScoreMode: 'leaster'
-        // cardToPlay: {} as TableCard
       };
     default:
       return state;
@@ -113,6 +118,10 @@ const useGame = (initialGame: GameState, initialPlayers: Player[]) => {
     blindCards = shuffledDeck.splice(0, 2);
 
     dispatch({ type: 'DEAL_CARDS', cards: blindCards });
+  };
+
+  const toggleInPlay = () => {
+    dispatch({ type: 'TOGGLE_IN_PLAY', inPlay: gameState.inPlay });
   };
 
   const moveToNext = () => {
@@ -165,6 +174,7 @@ const useGame = (initialGame: GameState, initialPlayers: Player[]) => {
 
   return {
     gameState,
+    toggleInPlay,
     players,
     dealCards,
     moveToNext,
