@@ -7,6 +7,7 @@ import { calculateWinner } from '../../GameLogic/gameUtil';
 describe('useGame', () => {
   // Sample initial data for testing
   const initialGame: GameState = {
+    inPlay: false,
     shuffledDeck: [],
     currentCardsOnTable: [],
     currentPlayer: 0,

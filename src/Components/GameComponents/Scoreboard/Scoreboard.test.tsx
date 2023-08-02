@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import Scoreboard from './Scoreboard';
-import { PlayerScore } from '../../types';
+import { PlayerScore } from '../../../types';
 
 describe('Scoreboard', () => {
   const scores: PlayerScore[] = [

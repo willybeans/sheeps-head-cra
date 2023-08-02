@@ -1,7 +1,7 @@
 import React, { useState, useEffect, SetStateAction } from 'react';
 import PlayerHand from '../CardComponents/PlayerHand/PlayerHand';
 import TrickPile from '../CardComponents/TrickPile/TrickPile';
-import Scoreboard from './Scoreboard';
+import Scoreboard from './Scoreboard/Scoreboard';
 import CurrentPlayer from './CurrentPlayer';
 import { Player, TableCard, PlayerScore, GameState } from '../../types';
 import usePlayer from '../Hooks/usePlayer';
@@ -44,8 +44,13 @@ const initialPlayers: Player[] = [
 
 const initialGame: GameState = {
   shuffledDeck: [],
-  currentCardsOnTable: [],
+  currentCardsOnTable: [
+    { player: 'player1', card: 'AS' },
+    { player: 'player2', card: 'SS' },
+    { player: 'player3', card: 'ES' }
+  ],
   currentPlayer: 0,
+  inPlay: true,
   picker: '',
   secretTeam: [],
   otherTeam: [],
@@ -58,7 +63,7 @@ const GameBoard: React.FC = () => {
   const { gameState, players } = useGame(initialGame, initialPlayers);
 
   // const [currentPlayer, setCurrentPlayer] = useState(players[0]);
-  const [trickCards, setTrickCards] = useState<string[]>([]);
+  // const [trickCards, setTrickCards] = useState<string[]>([]);
   const [scores, setScores] = useState<PlayerScore[]>();
 
   const hand1 = ['AH', 'AC', 'AS', 'KS', 'QS'];
@@ -73,6 +78,9 @@ const GameBoard: React.FC = () => {
 
     // setTrickCards();
   }, [players]);
+
+  useEffect(() => {}, [gameState]);
+
   const playCard = (card: string) => {
     // Logic to handle playing a card in the game
     // Update currentPlayer, trickCards, scores, etc.
