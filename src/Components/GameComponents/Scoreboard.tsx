@@ -1,7 +1,10 @@
 import React from 'react';
 import { PlayerScore, ScoreboardProps } from '../../types';
 
-const Scoreboard: React.FC<ScoreboardProps> = ({ scores }) => {
+interface Props {
+  scores?: PlayerScore[];
+}
+const Scoreboard: React.FC<Props> = ({ scores }) => {
   return (
     <div className="scoreboard">
       <h2>Scoreboard</h2>
