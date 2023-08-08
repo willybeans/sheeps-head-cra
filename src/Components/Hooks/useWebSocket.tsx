@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, MutableRefObject } from 'react';
 type WebSocketHook = {
   sendMessage: (message: string) => void;
   receivedMessages: string[];
+  receivedGameMoves: string[];
   webSocketRef: MutableRefObject<WebSocket | null>;
 };
 
@@ -57,6 +58,7 @@ const useWebSocket = (url: string): WebSocketHook => {
 
   return {
     sendMessage,
+    receivedGameMoves,
     receivedMessages,
     webSocketRef
   };
