@@ -1,40 +1,13 @@
 import { useState, useEffect, useRef, MutableRefObject } from 'react';
 import { Box, Grid, GridItem } from '@chakra-ui/react';
 import { ColorModeSwitcher } from '../Components/ColorModeSwitcher';
-// import {createDeck, shuffleDeck} from '../GameLogic/game'
+// import useWebSocket from '../Components/Hooks/useWebSocket';
 
 export const Game = () => {
-  // const [isPaused, setPause] = useState(false);
-  const [contents, setContents] = useState();
-  const ws = useRef(null) as MutableRefObject<null | WebSocket>;
+  // const { webSocketRef, receivedMessages } = useWebSocket(
+  //   'ws://localhost:8080/games/310d5995-7611-4888-9eb3-ecffc633c8e5'
+  // );
 
-  useEffect(() => {
-    ws.current = new WebSocket('ws://localhost:3000');
-    ws.current.onopen = () => console.log('ws opened');
-    ws.current.onclose = () => console.log('ws closed');
-
-    const wsCurrent = ws.current;
-
-    ws.current.onmessage = e => {
-      const message = JSON.parse(e.data);
-      setContents(message);
-      console.log('ws message:', message);
-    };
-
-    return () => {
-      wsCurrent.close();
-    };
-  }, []);
-
-  // useEffect(() => {
-  //     if (!ws.current) return;
-
-  //     ws.current.onmessage = e => {
-  //         if (isPaused) return;
-  //         const message = JSON.parse(e.data);
-  //         console.log("e", message);
-  //     };
-  // }, [isPaused]);
   return (
     <Box>
       test test test
@@ -55,10 +28,10 @@ export const Game = () => {
             header
           </GridItem>
           <GridItem pl="2" area={'game'}>
-            Testing websockets here: {contents}
+            {/* Testing websockets here: {receivedMessages} */}
           </GridItem>
           <GridItem pl="2" area={'chat'}>
-            test
+            {/* test {receivedMessages} */}
           </GridItem>
         </Grid>
       </Box>

@@ -91,7 +91,7 @@ const GameBoard: React.FC = () => {
       {/* <CurrentPlayer currentPlayer={currentPlayer} players={players} /> */}
       {}
       <Scoreboard scores={scores} />
-      <TrickPile cards={trickCards} />
+      {/* <TrickPile cards={trickCards} /> */}
       <PlayerHand hand={[]} playCard={playCard} />
     </div>
   );
