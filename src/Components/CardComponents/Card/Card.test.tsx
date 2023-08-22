@@ -3,26 +3,49 @@ import { render, fireEvent } from '@testing-library/react';
 import Card from './Card';
 
 describe('Card', () => {
-  const mockOnClick = jest.fn();
+  const mockCard = 'AH'; // Ace of Hearts
+  const mockCardClick = jest.fn();
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('renders card with suit and value', () => {
-    const { getByText } = render(<Card cardClick={mockOnClick} card="AD" />);
-    expect(getByText('ace of diamonds')).toBeInTheDocument();
+  it('renders the card component', () => {
+    const { getByTestId } = render(<Card card={mockCard} />);
+    const cardComponent = getByTestId('card-test');
+    expect(cardComponent).toBeInTheDocument();
   });
 
-  it('applies suit class based on the suit prop', () => {
-    const { container } = render(<Card cardClick={mockOnClick} card="KS" />);
-    const spans = container.querySelectorAll('span');
-    expect(spans[0]).toHaveClass('suit spades');
+  it('applies the "back" style when the card prop is "BACK"', () => {
+    const { getByTestId } = render(<Card card="BACK" />);
+    const cardComponent = getByTestId('card-test');
+    expect(cardComponent).toHaveClass('back');
   });
 
-  it('invokes onClick callback when clicked', () => {
-    const { container } = render(<Card card="QH" cardClick={mockOnClick} />);
-    fireEvent.click(container.firstChild!);
-    expect(mockOnClick).toHaveBeenCalledTimes(1);
+  it('displays the correct title for a face-down card', () => {
+    const { getByTestId } = render(<Card card="BACK" />);
+    const cardComponent = getByTestId('card-test');
+    expect(cardComponent).toHaveAttribute('title', 'Back of Card');
+  });
+
+  it('displays the correct title for a face-up card', () => {
+    const { getByTestId } = render(<Card card={mockCard} />);
+    const cardComponent = getByTestId('card-test');
+    expect(cardComponent).toHaveAttribute('title', 'ace of hearts');
+  });
+
+  it('calls the cardClick function when clicked', () => {
+    const { getByTestId } = render(
+      <Card card={mockCard} cardClick={mockCardClick} />
+    );
+    const cardComponent = getByTestId('card-test');
+    fireEvent.click(cardComponent);
+    expect(mockCardClick).toHaveBeenCalledWith(mockCard);
+  });
+
+  it('renders the card image', () => {
+    const { getByTestId } = render(<Card card={mockCard} />);
+    const cardImage = getByTestId('card-test').querySelector('img');
+    expect(cardImage).toBeInTheDocument();
   });
 });
