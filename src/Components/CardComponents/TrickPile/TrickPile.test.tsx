@@ -19,7 +19,7 @@ describe('TrickPile', () => {
     const { container } = render(<TrickPile cards={cards} />);
     const cardElements = container.querySelectorAll('.card');
     cardElements.forEach((cardElement, index) => {
-      const cardValue = cardElement.textContent;
+      const cardValue = cardElement.getAttribute('title');
       const convertedCard = convertCardToEnglish(cards[index].card);
       expect(cardValue).toBe(convertedCard);
     });
