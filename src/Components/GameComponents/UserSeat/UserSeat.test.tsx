@@ -34,9 +34,9 @@ describe('UserSeat', () => {
   });
 
   it('renders card components with "BACK" card', () => {
-    const { getAllByText } = render(<UserSeat {...mockPlayer} />);
+    const { getAllByTitle } = render(<UserSeat {...mockPlayer} />);
 
-    const backCardElements = getAllByText('Back of Card');
+    const backCardElements = getAllByTitle('Back of Card');
 
     expect(backCardElements.length).toBe(3);
   });

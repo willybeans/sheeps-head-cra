@@ -13,7 +13,7 @@ const UserSeat: React.FC<Player> = player => {
       <div className={styles.cards}>
         {player?.hand?.map((c, i) => {
           return (
-            <div className={styles.cardWrapper}>
+            <div key={`seat-${i}`} className={styles.cardWrapper}>
               <Card key={`${c}-${i}`} card="BACK" />
             </div>
           );
