@@ -10,7 +10,10 @@ interface Props {
 const TrickPile: React.FC<Props> = ({ cards }) => {
   return (
     <div className={styles.trickpile}>
-      {cards?.map((card, index) => <Card key={index} card={card.card} />)}
+      <h2>Trick Pile</h2>
+      <div className={styles.cardsWrapper}>
+        {cards?.map((card, index) => <Card key={index} card={card.card} />)}
+      </div>
     </div>
   );
 };
