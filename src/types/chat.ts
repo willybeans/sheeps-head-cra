@@ -6,6 +6,8 @@ export interface Messages {
   [key: string]: string;
 }
 
-// export inerface Message {
-
-// }
+export interface MessageBody {
+  time: string;
+  name: string;
+  content: string;
+}
