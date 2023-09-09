@@ -1,4 +1,13 @@
 .inputBox {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  input {
+    font-size: 14px;
+  }
+  button {
+    background-color: grey;
+    padding: 2px;
+  }
 }
