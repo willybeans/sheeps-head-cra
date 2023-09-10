@@ -1,15 +1,16 @@
 import { useState, useEffect, useRef, MutableRefObject } from 'react';
+import { MessageBody } from '../../types';
 
 type WebSocketHook = {
-  sendMessage: (message: string) => void;
-  receivedMessages: string[];
+  sendMessage: (message: MessageBody) => void;
+  receivedMessages: MessageBody[];
   receivedGameMoves: string[];
   webSocketRef: MutableRefObject<WebSocket | null>;
 };
 
-const useWebSocket = (url: string): WebSocketHook => {
+const useWebSocket = (url?: string): WebSocketHook => {
   const webSocketRef = useRef<WebSocket | null>(null);
-  const [receivedMessages, setReceivedMessages] = useState<string[]>([]);
+  const [receivedMessages, setReceivedMessages] = useState<MessageBody[]>([]);
   const [receivedGameMoves, setReceivedGameMoves] = useState<string[]>([]);
 
   const handleMessage = (event: MessageEvent) => {
@@ -27,8 +28,10 @@ const useWebSocket = (url: string): WebSocketHook => {
   };
 
   const connectWebSocket = () => {
-    webSocketRef.current = new WebSocket(url);
-    webSocketRef.current.onmessage = handleMessage;
+    if (url) {
+      webSocketRef.current = new WebSocket(url);
+      webSocketRef.current.onmessage = handleMessage;
+    }
   };
 
   const disconnectWebSocket = () => {
@@ -38,12 +41,15 @@ const useWebSocket = (url: string): WebSocketHook => {
     }
   };
 
-  const sendMessage = (message: string) => {
+  const sendMessage = (message: MessageBody) => {
     if (
       webSocketRef.current &&
       webSocketRef.current.readyState === WebSocket.OPEN
     ) {
-      webSocketRef.current.send(message);
+      try {
+        const stringedMessage = JSON.stringify(message);
+        webSocketRef.current.send(stringedMessage);
+      } catch (e) {}
     }
   };
 
@@ -51,6 +57,30 @@ const useWebSocket = (url: string): WebSocketHook => {
     if (url !== '') {
       connectWebSocket();
     }
+    //placeholder for dev
+    setReceivedMessages(prev => [
+      ...prev,
+      {
+        time: '123',
+        name: 'name1',
+        content: 'content1 content1 content1 content1'
+      },
+      {
+        time: '234',
+        name: 'name2',
+        content: 'content2'
+      },
+      {
+        time: '345',
+        name: 'name1',
+        content: 'content3'
+      },
+      {
+        time: '456',
+        name: 'name2',
+        content: 'content4'
+      }
+    ]);
     return () => {
       disconnectWebSocket();
     };
