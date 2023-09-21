@@ -1,16 +1,18 @@
 import React from 'react';
-import styles from './messageContainer.module.scss';
 import Message from '../Message/Message';
 import useWebSocket from '../../Hooks/useWebSocket';
+import { VStack } from '@chakra-ui/react';
 
 const MessageContainer: React.FC = () => {
   const { receivedMessages } = useWebSocket();
   return (
-    <div
+    <VStack
       data-testid={'message-container-test'}
-      className={`${styles.messageContainer}`}
+      justify="flex-start"
+      fontSize="md"
+      height="100%"
+      overflowY="scroll"
     >
-      message container
       {receivedMessages.map((obj, i) => {
         return (
           <Message
@@ -21,7 +23,7 @@ const MessageContainer: React.FC = () => {
           />
         );
       })}
-    </div>
+    </VStack>
   );
 };
 
