@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './message.module.scss';
 import { MessageBody } from '../../../types';
 import { Flex, Text, chakra } from '@chakra-ui/react';
 
