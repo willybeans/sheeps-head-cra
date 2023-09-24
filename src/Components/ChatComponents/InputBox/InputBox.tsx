@@ -45,6 +45,7 @@ const InputBox: React.FC = () => {
       <InputRightElement>
         <IconButton
           size="sm"
+          data-testid="send-button-test"
           variant="outline"
           colorScheme="facebook"
           aria-label="Send message"
