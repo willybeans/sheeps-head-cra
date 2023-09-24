@@ -11,8 +11,10 @@ const Message: React.FC<MessageBody> = ({ name, content, time }) => {
       width="100%"
     >
       <Text align="left">
-        <chakra.span fontWeight="extrabold">[{time}]</chakra.span>
-        <chakra.span fontWeight="extrabold">{name}: </chakra.span>
+        <chakra.span fontWeight="extrabold" color="gray.900">
+          [{time}]
+        </chakra.span>
+        <chakra.span fontWeight="extrabold">{name} : </chakra.span>
         {content}
       </Text>
     </Flex>
