@@ -1,13 +1,16 @@
 import React, { useState, useEffect, SetStateAction } from 'react';
-import PlayerHand from '../CardComponents/PlayerHand/PlayerHand';
-import TrickPile from '../CardComponents/TrickPile/TrickPile';
-import Scoreboard from './Scoreboard/Scoreboard';
-import CurrentPlayer from './CurrentPlayer';
-import { Player, TableCard, PlayerScore, GameState } from '../../types';
-import usePlayer from '../Hooks/usePlayer';
-import useGame from '../Hooks/useGame';
+import PlayerHand from '../../CardComponents/PlayerHand/PlayerHand';
+import TrickPile from '../../CardComponents/TrickPile/TrickPile';
+import Scoreboard from '../Scoreboard/Scoreboard';
+import CurrentPlayer from '../CurrentPlayer';
+import { Player, TableCard, PlayerScore, GameState } from '../../../types';
+import usePlayer from '../../Hooks/usePlayer';
+import useGame from '../../Hooks/useGame';
+import UserSeat from '../UserSeat/UserSeat';
+import styles from './gameboard.module.scss';
 
-import { GameBoardProps, Players, Game, GamePlayer } from '../../types';
+import { GameBoardProps, Players, Game, GamePlayer } from '../../../types';
+import { StylesProvider } from '@chakra-ui/react';
 
 const initialPlayers: Player[] = [
   {
@@ -69,6 +72,9 @@ const GameBoard: React.FC = () => {
   const hand1 = ['AH', 'AC', 'AS', 'KS', 'QS'];
   const hand2 = ['JD', 'KC', 'SS', 'ES', 'TS'];
 
+  const playerId = 'cookie';
+  const playerHand = players.filter(x => x.id === playerId);
+
   useEffect(() => {
     const scoreMap: PlayerScore[] = players.map(p => ({
       id: p.id,
@@ -87,12 +93,16 @@ const GameBoard: React.FC = () => {
   };
 
   return (
-    <div className="game-board">
-      {/* <CurrentPlayer currentPlayer={currentPlayer} players={players} /> */}
-      {}
+    <div className={styles.gameboard}>
       <Scoreboard scores={scores} />
-      {/* <TrickPile cards={trickCards} /> */}
-      <PlayerHand hand={[]} playCard={playCard} />
+      <div className={styles.userseats}>
+        {players.map((player, i) => {
+          return <UserSeat key={`${player.id}`} {...player} />;
+        })}
+      </div>
+
+      <TrickPile cards={gameState.currentCardsOnTable} />
+      {/* <PlayerHand hand={} playCard={playCard} /> */}
     </div>
   );
 };
