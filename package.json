@@ -44,11 +44,6 @@
       "npm test"
     ]
   },
-  "babel": {
-    "plugins": [
-      "babel-plugin-jsx-remove-data-test-id"
-    ]
-  },
   "eslintConfig": {
     "extends": "react-app",
     "plugins": [
@@ -72,7 +67,6 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "babel-plugin-jsx-remove-data-test-id": "^3.0.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^5.0.0",
     "husky": "^8.0.0",
