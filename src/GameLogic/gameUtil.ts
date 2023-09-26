@@ -20,10 +20,6 @@ export function getPlayerIndex(players: Players, playerId: string) {
 }
 
 export function convertCardToEnglish(card: string): string {
-  if (card === 'BACK') {
-    return 'Back of Card';
-  }
-
   const splitCard = card.split('');
   const value: string = cardTypes[splitCard[0]] as CardValues;
   const suit: string = cardSuites[splitCard[1]] as CardSuites;

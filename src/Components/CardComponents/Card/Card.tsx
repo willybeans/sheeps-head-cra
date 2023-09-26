@@ -11,14 +11,9 @@ const Card: React.FC<CardProps> = ({ card, cardClick }) => {
 
   return (
     <div
-      data-testid={'card-test'}
       className={styles.card}
       onClick={() => cardClick?.(card)}
-      title={
-        card === 'BACK'
-          ? convertCardToEnglish(card)
-          : `${cardTypes[value]} of ${cardSuites[suit]}`
-      }
+      title={`${cardTypes[value]} of ${cardSuites[suit]}`}
     >
       <img src={SvgMap(card)} />
       <span className={`suit ${cardSuites[suit]}`}>
