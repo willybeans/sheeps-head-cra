@@ -7,11 +7,14 @@ import { PlayerHandProps } from '../../../types';
 
 const PlayerHand: React.FC<PlayerHandProps> = ({ hand, playCard }) => {
   return (
-    <Flex className={styles.playersHand}>
-      {hand.map(card => (
-        <Card key={card} card={card} cardClick={playCard} />
-      ))}
-    </Flex>
+    <div className={styles.playersHand}>
+      <h2>Your Hand</h2>
+      <div className={styles.wrapper}>
+        {hand.map((card, i) => {
+          return <Card key={`card-${i}`} card={card} cardClick={playCard} />;
+        })}
+      </div>
+    </div>
   );
 };
 

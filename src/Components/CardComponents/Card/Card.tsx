@@ -12,7 +12,7 @@ const Card: React.FC<CardProps> = ({ card, cardClick }) => {
   return (
     <div
       data-testid={'card-test'}
-      className={styles.card}
+      className={`${styles.card} ${card === 'BACK' && styles.back}`}
       onClick={() => cardClick?.(card)}
       title={
         card === 'BACK'
@@ -21,9 +21,6 @@ const Card: React.FC<CardProps> = ({ card, cardClick }) => {
       }
     >
       <img src={SvgMap(card)} />
-      <span className={`suit ${cardSuites[suit]}`}>
-        {convertCardToEnglish(card)}
-      </span>
     </div>
   );
 };

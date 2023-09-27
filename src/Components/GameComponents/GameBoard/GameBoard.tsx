@@ -15,7 +15,7 @@ import { StylesProvider } from '@chakra-ui/react';
 const initialPlayers: Player[] = [
   {
     id: 'player1',
-    hand: ['A♠', 'K♠', 'Q♠', 'J♠', '10♠'],
+    hand: ['AS', 'KS', 'QS', 'JS', '10S'],
     score: 21,
     wonCardsTotal: 0,
     isPicker: false,
@@ -25,7 +25,7 @@ const initialPlayers: Player[] = [
   },
   {
     id: 'player2',
-    hand: ['2♠', '3♠', '4♠', '5♠', '6♠'],
+    hand: ['2S', '3S', '4S', '5S', '6S'],
     score: 2,
     wonCardsTotal: 0,
     isPicker: false,
@@ -35,7 +35,7 @@ const initialPlayers: Player[] = [
   },
   {
     id: 'player3',
-    hand: ['7♠', '8♠', '9♠', '10♠', 'J♠'],
+    hand: ['7S', '8S', '9S', '10S', 'JS'],
     score: -1,
     wonCardsTotal: 0,
     isPicker: false,
@@ -88,6 +88,7 @@ const GameBoard: React.FC = () => {
   useEffect(() => {}, [gameState]);
 
   const playCard = (card: string) => {
+    console.info('playCard <GameBoard>', card);
     // Logic to handle playing a card in the game
     // Update currentPlayer, trickCards, scores, etc.
   };
@@ -102,7 +103,7 @@ const GameBoard: React.FC = () => {
       </div>
 
       <TrickPile cards={gameState.currentCardsOnTable} />
-      {/* <PlayerHand hand={} playCard={playCard} /> */}
+      <PlayerHand hand={players[0].hand} playCard={playCard} />
     </div>
   );
 };

@@ -26,10 +26,8 @@ describe('PlayerHand', () => {
     );
     const cardElements = container.querySelectorAll('.card');
     cardElements.forEach((cardElement, index) => {
-      const cardValue = cardElement.textContent;
-
       const cardString = convertCardToEnglish(hand[index]);
-      expect(cardValue).toEqual(cardString);
+      expect(cardElement).toHaveAttribute('title', cardString);
     });
   });
 });
