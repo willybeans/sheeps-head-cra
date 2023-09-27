@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, MutableRefObject } from 'react';
 import { Box, Grid, GridItem } from '@chakra-ui/react';
 import { ColorModeSwitcher } from '../Components/ColorModeSwitcher';
 // import useWebSocket from '../Components/Hooks/useWebSocket';
+import GameBoard from '../Components/GameComponents/GameBoard/GameBoard';
 
 export const Game = () => {
   // const { webSocketRef, receivedMessages } = useWebSocket(
@@ -29,6 +30,7 @@ export const Game = () => {
           </GridItem>
           <GridItem pl="2" area={'game'}>
             {/* Testing websockets here: {receivedMessages} */}
+            <GameBoard />
           </GridItem>
           <GridItem pl="2" area={'chat'}>
             {/* test {receivedMessages} */}
