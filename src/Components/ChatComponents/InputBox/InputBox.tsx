@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
-import styles from './inputbox.module.scss';
 import useWebSocket from '../../Hooks/useWebSocket';
+import {
+  Input,
+  InputGroup,
+  InputRightElement,
+  IconButton
+} from '@chakra-ui/react';
+import { FaArrowCircleRight } from 'react-icons/fa';
+
 const InputBox: React.FC = () => {
   const { sendMessage } = useWebSocket();
   const [userInput, setUserInput] = useState('');
@@ -25,17 +32,28 @@ const InputBox: React.FC = () => {
   };
 
   return (
-    <div data-testid={'inputbox-test'} className={styles.inputBox}>
-      <input
-        type="text"
+    <InputGroup size={'md'}>
+      <Input
+        data-testid={'inputbox-test'}
         name="chat input"
+        onChange={onInput}
         value={userInput}
-        onInput={onInput}
         onKeyDown={keyPress}
-        placeholder="write your message here"
+        _placeholder={{ opacity: 1, color: 'gray.500' }}
+        placeholder="write message here"
       />
-      <button onClick={onSubmit}>send</button>
-    </div>
+      <InputRightElement>
+        <IconButton
+          size="sm"
+          data-testid="send-button-test"
+          variant="outline"
+          colorScheme="facebook"
+          aria-label="Send message"
+          icon={<FaArrowCircleRight />}
+          onClick={onSubmit}
+        />
+      </InputRightElement>
+    </InputGroup>
   );
 };
 

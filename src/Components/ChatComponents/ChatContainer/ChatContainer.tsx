@@ -1,19 +1,22 @@
 import React from 'react';
-import styles from './chatcontainer.module.scss';
-import { ChatProps } from '../../../types';
 import MessageContainer from '../MessageContainer/MessageContainer';
 import InputBox from '../InputBox/InputBox';
+import { Flex } from '@chakra-ui/react';
 
-//might not need props, could just grab directly from socket
 const ChatContainer: React.FC = () => {
   return (
-    <div
+    <Flex
+      bg={'purple.900'}
+      direction={'column'}
+      justify={'space-between'}
       data-testid={'chat-container-test'}
-      className={`${styles.chatContainer}`}
+      height="90%"
+      borderRadius="md"
+      padding=".25em"
     >
       <MessageContainer />
       <InputBox />
-    </div>
+    </Flex>
   );
 };
 
