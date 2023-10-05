@@ -22,9 +22,10 @@ export const Game = () => {
                   "game chat"
                   "game chat"`}
           gridTemplateRows={'50px 1fr 30px'}
-          gridTemplateColumns={'75% 1fr'}
+          gridTemplateColumns={'72% 28%'}
           h="100vh"
           w="100%"
+          padding={'5px'}
         >
           <GridItem pl="2" area={'header'}>
             header
