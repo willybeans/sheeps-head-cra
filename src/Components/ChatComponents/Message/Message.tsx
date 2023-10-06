@@ -11,7 +11,7 @@ const Message: React.FC<MessageBody> = ({ name, content, time }) => {
       width="100%"
     >
       <Text align="left">
-        <chakra.span fontWeight="extrabold" color="gray.900">
+        <chakra.span fontWeight="extrabold" color="gray.400">
           [{time}]
         </chakra.span>
         <chakra.span fontWeight="extrabold">{name} : </chakra.span>
