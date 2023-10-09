@@ -17,10 +17,9 @@ const InputBox: React.FC<{ send: WebSocketSend | undefined }> = props => {
     try {
       parsed = JSON.stringify({
         // time,
-        name: 'chicobuarque', // need to pass user val
         content: userInputRef?.current?.value,
         contentType: 'chat',
-        id: 'd2792a62-86a4-4c49-a909-b1e762c683a3'
+        userId: 'd2792a62-86a4-4c49-a909-b1e762c683a3'
       });
       if (props.send) {
         props.send(parsed);

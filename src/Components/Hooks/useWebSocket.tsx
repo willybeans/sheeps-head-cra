@@ -33,7 +33,7 @@ const useWebSocket = (url?: string): WebSocketHook => {
             setReceivedMessages(prev => [
               ...prev,
               {
-                name: parsed.user_id,
+                name: parsed.user_name,
                 time: parsed.sent_at,
                 content: parsed.content
               }
@@ -44,7 +44,7 @@ const useWebSocket = (url?: string): WebSocketHook => {
         } catch (e) {
           console.error(e);
         }
-        setVal(event); // reundant
+        setVal(event); // redundant
       };
 
       webSocketRef.current = ws;
