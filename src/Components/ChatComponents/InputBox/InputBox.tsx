@@ -1,15 +1,10 @@
 import React, { useRef, LegacyRef } from 'react';
-import {
-  Input,
-  InputGroup,
-  InputRightElement,
-  IconButton
-} from '@chakra-ui/react';
+import { InputGroup, InputRightElement, IconButton } from '@chakra-ui/react';
 import { FaArrowCircleRight } from 'react-icons/fa';
 import { WebSocketSend } from '../../../types';
 import InputWrapper from '../InputWrapper/InputWrapper';
 
-const InputBox: React.FC<{ send: WebSocketSend }> = props => {
+const InputBox: React.FC<{ send: WebSocketSend | undefined }> = props => {
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (userInputRef && userInputRef.current) {
@@ -27,7 +22,9 @@ const InputBox: React.FC<{ send: WebSocketSend }> = props => {
         contentType: 'chat',
         id: 'd2792a62-86a4-4c49-a909-b1e762c683a3'
       });
-      props.send(parsed);
+      if (props.send) {
+        props.send(parsed);
+      }
     } catch (e) {
       console.error('parse failed InputBox');
     }

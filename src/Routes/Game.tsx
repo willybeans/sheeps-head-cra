@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, MutableRefObject } from 'react';
+import { useEffect } from 'react';
 import { Box, Grid, GridItem } from '@chakra-ui/react';
 import { ColorModeSwitcher } from '../Components/ColorModeSwitcher';
 import useWebSocket from '../Components/Hooks/useWebSocket';
@@ -6,13 +6,19 @@ import GameBoard from '../Components/GameComponents/GameBoard/GameBoard';
 import ChatContainer from '../Components/ChatComponents/ChatContainer/ChatContainer';
 
 export const Game = () => {
-  const { webSocketRef, receivedMessages } = useWebSocket(
+  const [isReady, receivedMessages, val, send] = useWebSocket(
     'ws://localhost:8080/games/310d5995-7611-4888-9eb3-ecffc633c8e5'
   );
 
+  useEffect(() => {
+    if (isReady) {
+      // send('websocket send!');
+      // write message format thing
+    }
+  }, [isReady, send]);
+
   return (
     <Box>
-      test test test
       <Box textAlign="center" fontSize="xl">
         {/* needs to go in a header */}
         {/* <ColorModeSwitcher justifySelf="flex-end" /> */}
@@ -31,12 +37,10 @@ export const Game = () => {
             header
           </GridItem>
           <GridItem pl="2" area={'game'}>
-            {/* Testing websockets here: {receivedMessages} */}
             <GameBoard />
           </GridItem>
           <GridItem pl="2" area={'chat'}>
-            {/* test {receivedMessages} */}
-            <ChatContainer />
+            <ChatContainer send={send} chatFeed={receivedMessages} />
           </GridItem>
         </Grid>
       </Box>

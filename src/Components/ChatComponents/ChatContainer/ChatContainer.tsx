@@ -4,10 +4,10 @@ import InputBox from '../InputBox/InputBox';
 import { Flex } from '@chakra-ui/react';
 import { ChatFeed, WebSocketSend } from '../../../types';
 
-const ChatContainer: React.FC<{ send: WebSocketSend; chatFeed: ChatFeed }> = ({
-  send,
-  chatFeed
-}) => {
+const ChatContainer: React.FC<{
+  send: WebSocketSend | undefined;
+  chatFeed: ChatFeed;
+}> = ({ send, chatFeed }) => {
   return (
     <Flex
       bg={'purple.900'}
