@@ -2,8 +2,12 @@ import React from 'react';
 import MessageContainer from '../MessageContainer/MessageContainer';
 import InputBox from '../InputBox/InputBox';
 import { Flex } from '@chakra-ui/react';
+import { ChatFeed, WebSocketSend } from '../../../types';
 
-const ChatContainer: React.FC = () => {
+const ChatContainer: React.FC<{ send: WebSocketSend; chatFeed: ChatFeed }> = ({
+  send,
+  chatFeed
+}) => {
   return (
     <Flex
       bg={'purple.900'}
@@ -14,8 +18,8 @@ const ChatContainer: React.FC = () => {
       borderRadius="md"
       padding=".25em"
     >
-      <MessageContainer />
-      <InputBox />
+      <MessageContainer chatFeed={chatFeed} />
+      <InputBox send={send} />
     </Flex>
   );
 };
