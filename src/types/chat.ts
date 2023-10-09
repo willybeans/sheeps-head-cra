@@ -8,6 +8,7 @@ export interface Messages {
 
 export type ApiMessage = {
   chat_room_id: string;
+  user_name: string;
   user_id: string;
   content: string;
   id: string;

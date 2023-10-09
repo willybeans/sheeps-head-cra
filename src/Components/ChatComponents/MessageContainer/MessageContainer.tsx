@@ -13,10 +13,15 @@ const MessageContainer: React.FC<{ chatFeed: ChatFeed }> = props => {
       overflowY="scroll"
     >
       {props.chatFeed.map((obj, i) => {
+        const convertTime = new Date(obj.time).toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        });
         return (
           <Message
             key={`message-${i}`}
-            time={obj.time}
+            time={convertTime}
             name={obj.name}
             content={obj.content}
           />
