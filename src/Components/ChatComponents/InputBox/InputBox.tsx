@@ -1,28 +1,36 @@
-import React, { useState } from 'react';
-import useWebSocket from '../../Hooks/useWebSocket';
-import {
-  Input,
-  InputGroup,
-  InputRightElement,
-  IconButton
-} from '@chakra-ui/react';
+import React, { useRef, LegacyRef } from 'react';
+import { InputGroup, InputRightElement, IconButton } from '@chakra-ui/react';
 import { FaArrowCircleRight } from 'react-icons/fa';
+import { WebSocketSend } from '../../../types';
+import InputWrapper from '../InputWrapper/InputWrapper';
 
-const InputBox: React.FC = () => {
-  const { sendMessage } = useWebSocket();
-  const [userInput, setUserInput] = useState('');
+const InputBox: React.FC<{ send: WebSocketSend | undefined }> = props => {
+  const userInputRef = useRef<HTMLInputElement | null>(null);
   const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUserInput(event.target.value);
+    if (userInputRef && userInputRef.current) {
+      userInputRef.current.value = event.target.value;
+    }
   };
 
   const onSubmit = () => {
-    const d = new Date();
-    sendMessage({
-      time: d.getTime.toString(),
-      name: 'placeholder', // need to pass user val
-      content: userInput
-    });
-    setUserInput('');
+    let parsed: string = '';
+    try {
+      parsed = JSON.stringify({
+        // time,
+        name: 'chicobuarque', // need to pass user val
+        content: userInputRef?.current?.value,
+        contentType: 'chat',
+        id: 'd2792a62-86a4-4c49-a909-b1e762c683a3'
+      });
+      if (props.send) {
+        props.send(parsed);
+      }
+    } catch (e) {
+      console.error('parse failed InputBox');
+    }
+    if (userInputRef && userInputRef.current) {
+      userInputRef.current.value = '';
+    }
   };
 
   const keyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -33,14 +41,10 @@ const InputBox: React.FC = () => {
 
   return (
     <InputGroup size={'md'}>
-      <Input
-        data-testid={'inputbox-test'}
-        name="chat input"
-        onChange={onInput}
-        value={userInput}
-        onKeyDown={keyPress}
-        _placeholder={{ opacity: 1, color: 'gray.500' }}
-        placeholder="write message here"
+      <InputWrapper
+        userInputRef={userInputRef}
+        onInput={onInput}
+        keyPress={keyPress}
       />
       <InputRightElement>
         <IconButton

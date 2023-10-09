@@ -1,35 +1,24 @@
 import { render } from '@testing-library/react';
 import MessageContainer from './MessageContainer';
-import receivedMessages from '../../Hooks/useWebSocket';
+import { ChatFeed } from '../../../types';
 
-jest.mock('../../Hooks/useWebSocket', () => ({
-  __esModule: true,
-  default: jest.fn()
-}));
+const chatFeedMock: ChatFeed = [
+  { name: 'John', content: 'Hello', time: '09:16' },
+  { name: 'Brian', content: 'Hi!', time: '12:45' }
+];
 
 describe('MessageContainer', () => {
-  const mockUseWebSocket = receivedMessages as jest.Mock;
-
   it('renders the message container component', () => {
-    mockUseWebSocket.mockReturnValue({
-      receivedMessages: [
-        { name: 'John', content: 'Hello', time: '1632767888000' }
-        // Add more mock messages as needed
-      ]
-    });
-
-    const { getByTestId } = render(<MessageContainer />);
+    const { getByTestId } = render(
+      <MessageContainer chatFeed={chatFeedMock} />
+    );
 
     const messageContainer = getByTestId('message-container-test');
     expect(messageContainer).toBeInTheDocument();
   });
 
   it('renders messages correctly', () => {
-    mockUseWebSocket.mockReturnValue({
-      receivedMessages: [{ name: 'John', content: 'Hello', time: '12:34' }]
-    });
-
-    const { getByText } = render(<MessageContainer />);
+    const { getByText } = render(<MessageContainer chatFeed={chatFeedMock} />);
 
     const messageContent = getByText('Hello');
     expect(messageContent).toBeInTheDocument();

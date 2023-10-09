@@ -1,27 +1,17 @@
 import { render, fireEvent } from '@testing-library/react';
 import InputBox from './InputBox';
-// import useWebSocket from '../../Hooks/useWebSocket';
-
-// Mock the useWebSocket hook
-// jest.mock('../../Hooks/useWebSocket');
 
 describe('InputBox', () => {
   const mockSendMessage = jest.fn();
 
-  // beforeEach(() => {
-  //   useWebSocket.mockReturnValue({
-  //     sendMessage: mockSendMessage
-  //   });
-  // });
-
   it('renders the input box component', () => {
-    const { getByTestId } = render(<InputBox />);
+    const { getByTestId } = render(<InputBox send={mockSendMessage} />);
     const inputBoxComponent = getByTestId('inputbox-test');
     expect(inputBoxComponent).toBeInTheDocument();
   });
 
   it('updates the user input on change', () => {
-    const { getByTestId } = render(<InputBox />);
+    const { getByTestId } = render(<InputBox send={mockSendMessage} />);
     const inputBox = getByTestId('inputbox-test') as HTMLInputElement;
     fireEvent.change(inputBox, { target: { value: 'Test message' } });
     expect(inputBox.value).toBe('Test message');

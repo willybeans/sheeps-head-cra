@@ -1,97 +1,69 @@
-import { useState, useEffect, useRef, MutableRefObject } from 'react';
-import { MessageBody } from '../../types';
+import { useState, useEffect, useRef } from 'react';
+import { MessageBody, ApiMessage, WebSocketSend } from '../../types';
 
-type WebSocketHook = {
-  sendMessage: (message: MessageBody) => void;
-  receivedMessages: MessageBody[];
-  receivedGameMoves: string[];
-  webSocketRef: MutableRefObject<WebSocket | null>;
-};
+type WebSocketHook = [
+  isReady: boolean,
+  receivedMessages: MessageBody[],
+  val: WebSocket,
+  send: WebSocketSend | undefined
+];
 
 const useWebSocket = (url?: string): WebSocketHook => {
+  const urlRef = useRef<string | null>(null);
   const webSocketRef = useRef<WebSocket | null>(null);
   const [receivedMessages, setReceivedMessages] = useState<MessageBody[]>([]);
   const [receivedGameMoves, setReceivedGameMoves] = useState<string[]>([]);
-
-  const handleMessage = (event: MessageEvent) => {
-    const { data } = event;
-    let dataObj;
-    try {
-      dataObj = JSON.parse(data);
-    } catch (e) {}
-
-    if (dataObj?.contentType === 'chat') {
-      setReceivedMessages(prevMessages => [...prevMessages, data]);
-    } else if (dataObj?.contentType === 'game') {
-      setReceivedGameMoves(prevMoves => [...prevMoves, data]);
-    }
-  };
-
-  const connectWebSocket = () => {
-    if (url) {
-      webSocketRef.current = new WebSocket(url);
-      webSocketRef.current.onmessage = handleMessage;
-    }
-  };
-
-  const disconnectWebSocket = () => {
-    if (webSocketRef?.current?.readyState === 1) {
-      webSocketRef.current.close();
-      webSocketRef.current = null;
-    }
-  };
-
-  const sendMessage = (message: MessageBody) => {
-    if (
-      webSocketRef.current &&
-      webSocketRef.current.readyState === WebSocket.OPEN
-    ) {
-      try {
-        const stringedMessage = JSON.stringify(message);
-        webSocketRef.current.send(stringedMessage);
-      } catch (e) {}
-    }
-  };
+  const [val, setVal] = useState<any>(); // remove
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   useEffect(() => {
-    if (url !== '') {
-      connectWebSocket();
+    if (url && urlRef.current !== url && webSocketRef.current === null) {
+      const ws = new WebSocket(url);
+      ws.onopen = e => {
+        setIsReady(true);
+      };
+      ws.onclose = () => setIsReady(false);
+      ws.onmessage = event => {
+        const { data } = event;
+
+        let parsed = {} as ApiMessage;
+        try {
+          parsed = JSON.parse(data);
+          if (parsed.contentType === 'chat') {
+            setReceivedMessages(prev => [
+              ...prev,
+              {
+                name: parsed.user_id,
+                time: parsed.sent_at,
+                content: parsed.content
+              }
+            ]);
+          } else if (parsed.contentType === 'game') {
+            console.log('game');
+          }
+        } catch (e) {
+          console.error(e);
+        }
+        setVal(event); // reundant
+      };
+
+      webSocketRef.current = ws;
+      urlRef.current = url;
+      return () => {
+        if (ws.readyState === 1) {
+          // <-- This is important
+          ws.close();
+        }
+      };
     }
-    //placeholder for dev
-    setReceivedMessages(prev => [
-      ...prev,
-      {
-        time: '123',
-        name: 'name1',
-        content: 'content1 content1 content1 content1'
-      },
-      {
-        time: '234',
-        name: 'name2',
-        content: 'content2'
-      },
-      {
-        time: '345',
-        name: 'name1',
-        content: 'content3'
-      },
-      {
-        time: '456',
-        name: 'name2',
-        content: 'content4'
-      }
-    ]);
-    return () => {
-      disconnectWebSocket();
-    };
   }, [url]);
 
-  return {
-    sendMessage,
-    receivedGameMoves,
+  return [
+    isReady,
     receivedMessages,
-    webSocketRef
-  };
+    val,
+    webSocketRef.current?.send.bind(webSocketRef.current)
+  ];
 };
 
 export default useWebSocket;

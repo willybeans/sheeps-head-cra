@@ -1,19 +1,18 @@
 import React from 'react';
 import Message from '../Message/Message';
-import useWebSocket from '../../Hooks/useWebSocket';
 import { VStack } from '@chakra-ui/react';
+import { ChatFeed } from '../../../types';
 
-const MessageContainer: React.FC = () => {
-  const { receivedMessages } = useWebSocket();
+const MessageContainer: React.FC<{ chatFeed: ChatFeed }> = props => {
   return (
     <VStack
       data-testid={'message-container-test'}
-      justify="flex-start"
+      justify="flex-end"
       fontSize="md"
       height="100%"
       overflowY="scroll"
     >
-      {receivedMessages.map((obj, i) => {
+      {props.chatFeed.map((obj, i) => {
         return (
           <Message
             key={`message-${i}`}
