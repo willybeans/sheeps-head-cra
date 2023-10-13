@@ -1,10 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
-import { MessageBody, ApiMessage, WebSocketSend } from '../../types';
+import {
+  MessageBody,
+  ApiMessage,
+  WebSocketSend,
+  GameInstance
+} from '../../types';
 
 type WebSocketHook = [
   isReady: boolean,
   receivedMessages: MessageBody[],
-  val: WebSocket,
+  gameState: GameInstance,
   send: WebSocketSend | undefined
 ];
 
@@ -12,8 +17,7 @@ const useWebSocket = (url?: string): WebSocketHook => {
   const urlRef = useRef<string | null>(null);
   const webSocketRef = useRef<WebSocket | null>(null);
   const [receivedMessages, setReceivedMessages] = useState<MessageBody[]>([]);
-  const [receivedGameMoves, setReceivedGameMoves] = useState<string[]>([]);
-  const [val, setVal] = useState<any>(); // remove
+  const [gameState, setGameState] = useState<GameInstance>({} as GameInstance);
   const [isReady, setIsReady] = useState<boolean>(false);
 
   useEffect(() => {
@@ -39,12 +43,12 @@ const useWebSocket = (url?: string): WebSocketHook => {
               }
             ]);
           } else if (parsed.contentType === 'game') {
-            console.log('game');
+            console.log('parsed', parsed);
+            setGameState({ ...(parsed.gameInstance as GameInstance) });
           }
         } catch (e) {
           console.error(e);
         }
-        setVal(event); // redundant
       };
 
       webSocketRef.current = ws;
@@ -61,7 +65,7 @@ const useWebSocket = (url?: string): WebSocketHook => {
   return [
     isReady,
     receivedMessages,
-    val,
+    gameState,
     webSocketRef.current?.send.bind(webSocketRef.current)
   ];
 };

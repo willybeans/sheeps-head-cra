@@ -7,6 +7,7 @@ import { ChatFeed, WebSocketSend } from '../../../types';
 const ChatContainer: React.FC<{
   send: WebSocketSend | undefined;
   chatFeed: ChatFeed;
+  userId?: string;
 }> = ({ send, chatFeed }) => {
   return (
     <Flex
