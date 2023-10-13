@@ -1,4 +1,4 @@
-import { GamePlayer, TableCard, Players } from './players';
+import { GamePlayer, TableCard, Players, Player } from './players';
 
 export interface TurnIndicatorProps {
   currentPlayer: string;
@@ -16,6 +16,17 @@ export interface PlayerScore {
 
 export interface ScoreboardProps {
   scores: PlayerScore[];
+}
+
+export interface GameInstance {
+  players?: Player[];
+  currentCardsOnTable: TableCard[];
+  currentPlayer: number;
+  picker: string;
+  secretTeam: string[];
+  otherTeam: string[];
+  blindCards: string[];
+  setScoreMode: 'picker';
 }
 
 export interface GameState {

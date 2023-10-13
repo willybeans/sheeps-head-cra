@@ -1,3 +1,5 @@
+import { GameInstance } from './game';
+
 export interface ChatProps {
   messages: Messages;
 }
@@ -7,6 +9,7 @@ export interface Messages {
 }
 
 export type ApiMessage = {
+  gameInstance?: GameInstance;
   chat_room_id: string;
   user_name: string;
   user_id: string;
