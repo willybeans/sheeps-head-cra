@@ -3,89 +3,26 @@ import PlayerHand from '../../CardComponents/PlayerHand/PlayerHand';
 import TrickPile from '../../CardComponents/TrickPile/TrickPile';
 import Scoreboard from '../Scoreboard/Scoreboard';
 import CurrentPlayer from '../CurrentPlayer';
-import { Player, TableCard, PlayerScore, GameState } from '../../../types';
-import usePlayer from '../../Hooks/usePlayer';
-import useGame from '../../Hooks/useGame';
+import { GameInstance, WebSocketSend } from '../../../types';
+
 import UserSeat from '../UserSeat/UserSeat';
-import styles from './gameboard.module.scss';
+import { Button, Flex } from '@chakra-ui/react';
 
-import { GameBoardProps, Players, Game, GamePlayer } from '../../../types';
-import { StylesProvider } from '@chakra-ui/react';
-
-const initialPlayers: Player[] = [
-  {
-    id: 'player1',
-    hand: ['AS', 'KS', 'QS', 'JS', '10S'],
-    score: 21,
-    wonCardsTotal: 0,
-    isPicker: false,
-    wonCards: [],
-    onSecretTeam: true,
-    cardToPlay: {} as TableCard
-  },
-  {
-    id: 'player2',
-    hand: ['2S', '3S', '4S', '5S', '6S'],
-    score: 2,
-    wonCardsTotal: 0,
-    isPicker: false,
-    wonCards: [],
-    onSecretTeam: true,
-    cardToPlay: {} as TableCard
-  },
-  {
-    id: 'player3',
-    hand: ['7S', '8S', '9S', '10S', 'JS'],
-    score: -1,
-    wonCardsTotal: 0,
-    isPicker: false,
-    wonCards: [],
-    onSecretTeam: false,
-    cardToPlay: {} as TableCard
-  }
-];
-
-const initialGame: GameState = {
-  shuffledDeck: [],
-  currentCardsOnTable: [
-    { player: 'player1', card: 'AS' },
-    { player: 'player2', card: 'SS' },
-    { player: 'player3', card: 'ES' }
-  ],
-  currentPlayer: 0,
-  inPlay: true,
-  picker: '',
-  secretTeam: [],
-  otherTeam: [],
-  blindCards: [],
-  setScoreMode: 'picker'
-};
-
-const GameBoard: React.FC = () => {
-  // const { players } = usePlayer(initialPlayers);
-  const { gameState, players } = useGame(initialGame, initialPlayers);
-
-  // const [currentPlayer, setCurrentPlayer] = useState(players[0]);
-  // const [trickCards, setTrickCards] = useState<string[]>([]);
-  const [scores, setScores] = useState<PlayerScore[]>();
-
-  const hand1 = ['AH', 'AC', 'AS', 'KS', 'QS'];
-  const hand2 = ['JD', 'KC', 'SS', 'ES', 'TS'];
-
-  const playerId = 'cookie';
-  const playerHand = players.filter(x => x.id === playerId);
+const GameBoard: React.FC<{
+  send: WebSocketSend | undefined;
+  gameState: GameInstance;
+  userId?: string;
+}> = ({ send, gameState, userId }) => {
+  const [isSeated, setIsSeated] = useState<boolean>(false);
 
   useEffect(() => {
-    const scoreMap: PlayerScore[] = players.map(p => ({
-      id: p.id,
-      score: Number(p.score)
-    }));
-    setScores(scoreMap);
-
-    // setTrickCards();
-  }, [players]);
-
-  useEffect(() => {}, [gameState]);
+    if (!isSeated) {
+      console.log('if seated');
+      gameState?.players?.forEach(p => {
+        if (p.id === userId) setIsSeated(true);
+      });
+    }
+  }, [gameState]);
 
   const playCard = (card: string) => {
     console.info('playCard <GameBoard>', card);
@@ -93,18 +30,51 @@ const GameBoard: React.FC = () => {
     // Update currentPlayer, trickCards, scores, etc.
   };
 
+  const seatAction = () => {
+    let stringified = '';
+    try {
+      stringified = JSON.stringify({
+        userId,
+        gameCommand: !isSeated ? 'setPlayer' : 'removePlayer',
+        contentType: 'game'
+      });
+      if (send) send(stringified);
+    } catch (e) {
+      console.error('failed at seatActions', e);
+    }
+  };
+
   return (
-    <div className={styles.gameboard}>
-      <Scoreboard scores={scores} />
-      <div className={styles.userseats}>
-        {players.map((player, i) => {
+    <Flex direction={'column'}>
+      <Flex direction={'row'} justify={'flex-end'}>
+        <Button
+          colorScheme={!isSeated ? 'purple' : 'pink'}
+          size="md"
+          onClick={seatAction}
+        >
+          {!isSeated ? 'Take a Seat' : 'Leave Your Seat'}
+        </Button>
+      </Flex>
+      {/* <Scoreboard scores={scores} /> */}
+      <Flex direction={'row'} justify={'space-around'}>
+        {gameState?.players?.map((player, i) => {
           return <UserSeat key={`${player.id}`} {...player} />;
         })}
-      </div>
+      </Flex>
 
       <TrickPile cards={gameState.currentCardsOnTable} />
-      <PlayerHand hand={players[0].hand} playCard={playCard} />
-    </div>
+      {gameState?.players?.map((p, i) => {
+        if (p.id === userId) {
+          return (
+            <PlayerHand
+              key={'yourhand ' + i}
+              hand={p.hand}
+              playCard={playCard}
+            />
+          );
+        }
+      })}
+    </Flex>
   );
 };
 

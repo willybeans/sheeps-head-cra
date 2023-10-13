@@ -4,22 +4,22 @@ import styles from './userseat.module.scss';
 import Card from '../../CardComponents/Card/Card';
 import { Player } from '../../../types';
 import Sheep from '../../../svgs/sheep/Eid-Sheep.svg';
+import { Box, Flex, Image } from '@chakra-ui/react';
 
 const UserSeat: React.FC<Player> = player => {
+  //temp
+  const tempName = player.id.split('-');
   return (
-    <div className={styles.userSeat}>
-      <div>{player.id}</div>
-      <img src={Sheep} alt="Sheep" />
-      <div className={styles.cards}>
+    <Flex direction={'column'} justify={'flex-start'} align={'center'}>
+      <div>{tempName[1]}</div>
+      <Image boxSize={'5rem'} src={Sheep} alt="Sheep" />
+      <Flex direction={'row'} paddingLeft={'1rem'}>
         {player?.hand?.map((c, i) => {
-          return (
-            <div key={`seat-${i}`} className={styles.cardWrapper}>
-              <Card key={`${c}-${i}`} card="BACK" />
-            </div>
-          );
+          return <Card key={`${c}-${i}`} card="BACK" />;
         })}
-      </div>
-    </div>
+      </Flex>
+      {player?.cardToPlay?.card && <Card card={player?.cardToPlay?.card} />}
+    </Flex>
   );
 };
 

@@ -13,23 +13,19 @@ const InputBox: React.FC<{ send: WebSocketSend | undefined }> = props => {
   };
 
   const onSubmit = () => {
-    let parsed: string = '';
+    let stringified: string = '';
     try {
-      parsed = JSON.stringify({
-        // time,
-        content: userInputRef?.current?.value,
+      stringified = JSON.stringify({
+        chatMessage: userInputRef?.current?.value,
         contentType: 'chat',
+        // grab from cookie
         userId: 'd2792a62-86a4-4c49-a909-b1e762c683a3'
       });
-      if (props.send) {
-        props.send(parsed);
-      }
+      if (props.send) props.send(stringified);
     } catch (e) {
       console.error('parse failed InputBox');
     }
-    if (userInputRef && userInputRef.current) {
-      userInputRef.current.value = '';
-    }
+    if (userInputRef?.current) userInputRef.current.value = '';
   };
 
   const keyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {

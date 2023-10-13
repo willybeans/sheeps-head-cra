@@ -5,9 +5,9 @@ import styles from './card.module.scss';
 import { CardProps } from '../../../types/';
 import { SvgMap } from '../../../utils/svgMap';
 const Card: React.FC<CardProps> = ({ card, cardClick }) => {
-  const splitCard = card.split('');
-  const value: string = splitCard[0];
-  const suit: string = splitCard[1];
+  const splitCard = card?.split('');
+  const suit: string = splitCard[0] ?? '';
+  const value: string = splitCard[1] ?? '';
 
   return (
     <div
