@@ -1,23 +1,46 @@
-import React from 'react';
+import { FC, Dispatch, SetStateAction } from 'react';
 import { cardSuites, cardTypes } from '../../../GameLogic/deck';
 import { convertCardToEnglish } from '../../../GameLogic/gameUtil';
 import styles from './card.module.scss';
-import { CardProps } from '../../../types/';
 import { SvgMap } from '../../../utils/svgMap';
-const Card: React.FC<CardProps> = ({ card, cardClick }) => {
+
+interface Props {
+  card: string;
+  hasCardToPlay?: boolean;
+  isPlayerHand?: boolean;
+  isSelected?: boolean;
+  setSelectedCard?: Dispatch<SetStateAction<string>>;
+}
+const Card: FC<Props> = ({
+  card,
+  isPlayerHand,
+  isSelected,
+  setSelectedCard,
+  hasCardToPlay
+}) => {
   const splitCard = card?.split('');
   const suit: string = splitCard[0] ?? '';
   const value: string = splitCard[1] ?? '';
 
+  const onClick = () => {
+    if (!hasCardToPlay && isPlayerHand) {
+      if (setSelectedCard) {
+        isSelected ? setSelectedCard('') : setSelectedCard(card);
+      }
+    }
+  };
+
   return (
     <div
       data-testid={'card-test'}
-      className={`${styles.card} ${card === 'BACK' && styles.back}`}
-      onClick={() => cardClick?.(card)}
+      className={`${isSelected ? styles.largeCard : styles.card} ${
+        card === 'BACK' && styles.back
+      }`}
+      onClick={onClick}
       title={
         card === 'BACK'
           ? convertCardToEnglish(card)
-          : `${cardTypes[value]} of ${cardSuites[suit]}`
+          : `${cardTypes[suit]} of ${cardSuites[value]}`
       }
     >
       <img src={SvgMap(card)} />
