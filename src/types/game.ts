@@ -5,6 +5,11 @@ export interface TurnIndicatorProps {
   players: string[];
 }
 
+export type PlayCard = (
+  card?: string | undefined,
+  isPlayerHand?: boolean | undefined
+) => void;
+
 export interface GameBoardProps {
   players: string[];
 }

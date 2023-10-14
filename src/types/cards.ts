@@ -19,13 +19,3 @@ export type CardValues =
   | 'ace';
 
 export type CardSuites = 'clubs' | 'spades' | 'hearts' | 'diamonds';
-
-export interface CardProps {
-  card: string;
-  cardClick?: (card: string) => void;
-}
-
-export interface PlayerHandProps {
-  hand: string[];
-  playCard: (card: string) => void;
-}

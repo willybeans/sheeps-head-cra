@@ -1,20 +1,43 @@
 import React from 'react';
 import Card from '../Card/Card';
 import { Flex } from '@chakra-ui/react';
-import styles from './PlayerHand.module.scss';
 
-import { PlayerHandProps } from '../../../types';
+export interface Props {
+  hand: string[];
+  hasCardToPlay: boolean;
+  selectedCard: string;
+  setSelectedCard: React.Dispatch<React.SetStateAction<string>>;
+}
 
-const PlayerHand: React.FC<PlayerHandProps> = ({ hand, playCard }) => {
+const PlayerHand: React.FC<Props> = ({
+  hand,
+  hasCardToPlay,
+  selectedCard,
+  setSelectedCard
+}) => {
+  console.log('hascard test', hasCardToPlay);
   return (
-    <div className={styles.playersHand}>
-      <h2>Your Hand</h2>
-      <div className={styles.wrapper}>
+    <Flex direction={'column'} justify={'flex-end'}>
+      <Flex
+        direction={'row'}
+        justify={'center'}
+        overflow={'scroll'}
+        minHeight={'10rem'}
+      >
         {hand.map((card, i) => {
-          return <Card key={`card-${i}`} card={card} cardClick={playCard} />;
+          return (
+            <Card
+              key={`card-${i}`}
+              hasCardToPlay={hasCardToPlay}
+              isSelected={selectedCard === card ? true : false}
+              setSelectedCard={setSelectedCard}
+              isPlayerHand
+              card={card}
+            />
+          );
         })}
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 };
 

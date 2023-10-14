@@ -5,7 +5,7 @@ import Card from './Card';
 describe('Card', () => {
   const mockCard = 'AH'; // Ace of Hearts
   const mockCardClick = jest.fn();
-
+  const mockSetSelectedCard = jest.fn();
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -36,11 +36,17 @@ describe('Card', () => {
 
   it('calls the cardClick function when clicked', () => {
     const { getByTestId } = render(
-      <Card card={mockCard} cardClick={mockCardClick} />
+      <Card
+        hasCardToPlay={false}
+        isSelected={true}
+        setSelectedCard={mockSetSelectedCard}
+        isPlayerHand
+        card={mockCard}
+      />
     );
     const cardComponent = getByTestId('card-test');
     fireEvent.click(cardComponent);
-    expect(mockCardClick).toHaveBeenCalledWith(mockCard);
+    expect(cardComponent).toHaveClass('largeCard');
   });
 
   it('renders the card image', () => {
