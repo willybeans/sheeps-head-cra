@@ -36,6 +36,22 @@ const GameBoard: React.FC<{
     }
   };
 
+  const startGameAction = () => {
+    if (gameState?.players && gameState.players.length >= 3) {
+      let stringified = '';
+      try {
+        stringified = JSON.stringify({
+          userId,
+          gameCommand: 'gameStart',
+          contentType: 'game'
+        });
+        if (send) send(stringified);
+      } catch (e) {
+        console.error('failed at seatActions', e);
+      }
+    }
+  };
+
   const seatAction = () => {
     let stringified = '';
     try {
@@ -63,13 +79,22 @@ const GameBoard: React.FC<{
         >
           Play Card
         </Button>
-        <Button
-          colorScheme={!isSeated ? 'purple' : 'pink'}
-          size="md"
-          onClick={seatAction}
-        >
-          {!isSeated ? 'Take a Seat' : 'Leave Your Seat'}
-        </Button>
+
+        {isSeated && !gameState.inProgress && (
+          <Button size="md" colorScheme={'green'} onClick={startGameAction}>
+            Start Game!
+          </Button>
+        )}
+
+        {!isSeated && (
+          <Button
+            colorScheme={!isSeated ? 'purple' : 'pink'}
+            size="md"
+            onClick={seatAction}
+          >
+            {!isSeated ? 'Take a Seat' : 'Leave Your Seat'}
+          </Button>
+        )}
       </Flex>
       <Flex direction={'row'} justify={'space-around'}>
         {gameState?.players?.map((player, i) => {
