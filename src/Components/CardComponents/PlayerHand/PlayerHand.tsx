@@ -15,7 +15,6 @@ const PlayerHand: React.FC<Props> = ({
   selectedCard,
   setSelectedCard
 }) => {
-  console.log('hascard test', hasCardToPlay);
   return (
     <Flex direction={'column'} justify={'flex-end'}>
       <Flex
