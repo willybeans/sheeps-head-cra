@@ -32,6 +32,7 @@ export interface GameInstance {
   otherTeam: string[];
   blindCards: string[];
   setScoreMode: 'picker';
+  inProgress: boolean;
 }
 
 export interface GameState {
