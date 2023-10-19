@@ -35,3 +35,8 @@ export interface Player {
   wonCards: string[];
   cardToPlay: TableCard;
 }
+
+export interface User {
+  id: string;
+  username: string;
+}

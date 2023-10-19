@@ -4,7 +4,10 @@ import { FaArrowCircleRight } from 'react-icons/fa';
 import { WebSocketSend } from '../../../types';
 import InputWrapper from '../InputWrapper/InputWrapper';
 
-const InputBox: React.FC<{ send: WebSocketSend | undefined }> = props => {
+const InputBox: React.FC<{
+  send: WebSocketSend | undefined;
+  userId?: string;
+}> = props => {
   const userInputRef = useRef<HTMLInputElement | null>(null);
   const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (userInputRef && userInputRef.current) {
@@ -19,7 +22,7 @@ const InputBox: React.FC<{ send: WebSocketSend | undefined }> = props => {
         chatMessage: userInputRef?.current?.value,
         contentType: 'chat',
         // grab from cookie
-        userId: 'd2792a62-86a4-4c49-a909-b1e762c683a3'
+        userId: props?.userId
       });
       if (props.send) props.send(stringified);
     } catch (e) {
