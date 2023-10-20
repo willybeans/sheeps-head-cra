@@ -38,7 +38,7 @@ export const Game = () => {
           `http://localhost:8080/getUser?id=${userObj?.user?.id}`
         );
         const dbUser = await response.json();
-        if (user) setUser({ ...dbUser.user });
+        if (dbUser) setUser({ ...dbUser.user });
       })();
     } else {
       // get user id /or/ make one and return,

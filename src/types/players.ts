@@ -26,6 +26,7 @@ export interface WinningCard extends TableCard {
 }
 
 export interface Player {
+  userName?: string;
   id: string;
   hand: string[];
   score: number;
