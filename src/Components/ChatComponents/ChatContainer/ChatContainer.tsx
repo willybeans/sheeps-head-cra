@@ -8,7 +8,8 @@ const ChatContainer: React.FC<{
   send: WebSocketSend | undefined;
   chatFeed: ChatFeed;
   userId?: string;
-}> = ({ send, chatFeed }) => {
+  userName?: string;
+}> = ({ send, chatFeed, userId }) => {
   return (
     <Flex
       bg={'purple.900'}
@@ -20,7 +21,7 @@ const ChatContainer: React.FC<{
       padding=".25em"
     >
       <MessageContainer chatFeed={chatFeed} />
-      <InputBox send={send} />
+      <InputBox userId={userId} send={send} />
     </Flex>
   );
 };
