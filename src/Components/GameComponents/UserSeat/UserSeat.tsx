@@ -6,12 +6,10 @@ import { Box, Flex, Image, Heading } from '@chakra-ui/react';
 import WonCards from '../WonCards/WonCards';
 
 const UserSeat: React.FC<Player> = player => {
-  //temp
-  const tempName = player.id.split('-');
   return (
     <Flex direction={'column'} justify={'flex-start'} align={'center'}>
       <Heading as="h6" size="4xs">
-        {tempName[1]}
+        {player.userName}
       </Heading>
       <Image boxSize={'5rem'} src={Sheep} alt="Sheep" />
       <Box>Score: {player.score}</Box>
