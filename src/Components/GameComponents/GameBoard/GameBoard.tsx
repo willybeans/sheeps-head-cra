@@ -18,8 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { getPlayerIndex } from '../../../utils/helpers';
 import { convertCardToEnglish } from '../../../GameLogic/gameUtil';
-
-const blindCards = ['JD', 'AH', 'AC', 'AS', 'AD'];
+import { blindCards } from '../../../utils/helpers';
 
 const GameBoard: React.FC<{
   send: WebSocketSend | undefined;
