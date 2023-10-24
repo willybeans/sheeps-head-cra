@@ -2,8 +2,23 @@ import React, { useState, useEffect, SetStateAction } from 'react';
 import PlayerHand from '../../CardComponents/PlayerHand/PlayerHand';
 import { GameInstance, WebSocketSend } from '../../../types';
 import UserSeat from '../UserSeat/UserSeat';
-import { Button, Flex, Box, Heading } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Box,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
+  ModalHeader,
+  ModalCloseButton,
+  ModalFooter,
+  useDisclosure
+} from '@chakra-ui/react';
 import { getPlayerIndex } from '../../../utils/helpers';
+import { convertCardToEnglish } from '../../../GameLogic/gameUtil';
+import { blindCards } from '../../../utils/helpers';
 
 const GameBoard: React.FC<{
   send: WebSocketSend | undefined;
@@ -12,7 +27,7 @@ const GameBoard: React.FC<{
 }> = ({ send, gameState, userId }) => {
   const [isSeated, setIsSeated] = useState<boolean>(false);
   const [selectedCard, setSelectedCard] = useState<string>('');
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
     if (!isSeated) {
       gameState?.players?.forEach(p => {
@@ -53,13 +68,22 @@ const GameBoard: React.FC<{
     }
   };
 
-  const blindCardAction = (command: string) => {
+  const blindCardAction = (command: string, card?: string) => {
     let stringified = '';
+    let buildCommand: string | {} = '';
+
+    if (command === 'take') {
+      buildCommand = {
+        setPickerAndTeams: card
+      };
+    } else {
+      buildCommand = 'passBlindToNext';
+    }
+
     try {
       stringified = JSON.stringify({
         userId,
-        gameCommand:
-          command === 'take' ? 'setPickerAndTeams' : 'passBlindToNext',
+        gameCommand: buildCommand,
         contentType: 'game'
       });
       if (send) send(stringified);
@@ -111,14 +135,63 @@ if you arent seated, just say whos turn it is, period
               {getPlayerIndex(gameState?.players, userId) ===
               gameState.currentPlayer ? (
                 <Box>
-                  <Button
-                    size="md"
-                    marginRight={'0.5rem'}
-                    colorScheme={'green'}
-                    onClick={() => blindCardAction('take')}
-                  >
-                    Take Blind Cards
+                  <Button colorScheme="green" onClick={onOpen}>
+                    Take the blind
                   </Button>
+
+                  <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>
+                        Please pick a card to set the secret team
+                      </ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <Flex direction={'column'} alignItems={'center'}>
+                          {blindCards.map((card, index) => {
+                            const playerIndex = getPlayerIndex(
+                              gameState?.players,
+                              userId
+                            );
+
+                            if (
+                              gameState.players &&
+                              playerIndex !== undefined &&
+                              playerIndex >= 0
+                            ) {
+                              const hasCard =
+                                gameState?.players[playerIndex]?.hand.indexOf(
+                                  card
+                                );
+
+                              if (hasCard === -1) {
+                                return (
+                                  <Button
+                                    key={`${card}-${index}`}
+                                    size="md"
+                                    width="50%"
+                                    colorScheme={'blue'}
+                                    marginBottom={'1rem'}
+                                    onClick={() =>
+                                      blindCardAction('take', card)
+                                    }
+                                  >
+                                    {convertCardToEnglish(card)}
+                                  </Button>
+                                );
+                              }
+                            }
+                          })}
+                        </Flex>
+                      </ModalBody>
+
+                      <ModalFooter>
+                        <Button colorScheme="red" mr={3} onClick={onClose}>
+                          Close
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
                   <Button
                     size="md"
                     colorScheme={'red'}
