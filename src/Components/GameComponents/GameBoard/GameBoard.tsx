@@ -2,7 +2,8 @@ import React, { useState, useEffect, SetStateAction } from 'react';
 import PlayerHand from '../../CardComponents/PlayerHand/PlayerHand';
 import { GameInstance, WebSocketSend } from '../../../types';
 import UserSeat from '../UserSeat/UserSeat';
-import { Button, Flex } from '@chakra-ui/react';
+import { Button, Flex, Box, Heading } from '@chakra-ui/react';
+import { getPlayerIndex } from '../../../utils/helpers';
 
 const GameBoard: React.FC<{
   send: WebSocketSend | undefined;
@@ -13,11 +14,11 @@ const GameBoard: React.FC<{
   const [selectedCard, setSelectedCard] = useState<string>('');
 
   useEffect(() => {
-    // if (isSeated) {
-    //   gameState?.players?.forEach(p => {
-    //     if (p.id === userId) setIsSeated(!isSeated);
-    //   });
-    // }
+    if (!isSeated) {
+      gameState?.players?.forEach(p => {
+        if (p.id === userId) setIsSeated(true);
+      });
+    }
   }, [gameState]);
 
   const cardAction = () => {
@@ -52,6 +53,22 @@ const GameBoard: React.FC<{
     }
   };
 
+  const blindCardAction = (command: string) => {
+    let stringified = '';
+    try {
+      stringified = JSON.stringify({
+        userId,
+        gameCommand:
+          command === 'take' ? 'setPickerAndTeams' : 'passBlindToNext',
+        contentType: 'game'
+      });
+      if (send) send(stringified);
+      setIsSeated(!isSeated);
+    } catch (e) {
+      console.error('failed at seatActions', e);
+    }
+  };
+
   const seatAction = () => {
     let stringified = '';
     try {
@@ -80,13 +97,88 @@ const GameBoard: React.FC<{
           Play Card
         </Button>
 
+        {/* {is it your turn? 
+if yes: say something about either the blind, or playing a card 
+if it isnt your turn, say something about waiting for your turn
+
+if you arent seated, just say whos turn it is, period
+
+} */}
+        {isSeated &&
+          gameState.inProgress &&
+          gameState?.blindCards?.length > 0 && (
+            <Flex width={'100%'} justify={'flex-end'}>
+              {getPlayerIndex(gameState?.players, userId) ===
+              gameState.currentPlayer ? (
+                <Box>
+                  <Button
+                    size="md"
+                    marginRight={'0.5rem'}
+                    colorScheme={'green'}
+                    onClick={() => blindCardAction('take')}
+                  >
+                    Take Blind Cards
+                  </Button>
+                  <Button
+                    size="md"
+                    colorScheme={'red'}
+                    onClick={() => blindCardAction('pass')}
+                  >
+                    Pass to next player
+                  </Button>
+                </Box>
+              ) : (
+                <Heading
+                  as="h5"
+                  size="md"
+                  color={'tomato'}
+                  display={'flex'}
+                  textAlign={'center'}
+                >
+                  {gameState?.blindCards?.length > 0 && 'Waiting on blind'}
+                </Heading>
+              )}
+            </Flex>
+          )}
+
+        {isSeated &&
+          gameState.inProgress &&
+          gameState?.blindCards?.length === 0 && (
+            <Flex justify={'flex-start'}>
+              <Heading
+                as="h5"
+                size="md"
+                color={'tomato'}
+                display={'flex'}
+                textAlign={'center'}
+              >
+                {getPlayerIndex(gameState?.players, userId) ===
+                gameState.currentPlayer
+                  ? 'please play a card'
+                  : `waiting on ${
+                      gameState.players &&
+                      gameState?.players[gameState?.currentPlayer].userName
+                    }`}
+              </Heading>
+            </Flex>
+          )}
+
         {isSeated && !gameState.inProgress && (
           <Button size="md" colorScheme={'green'} onClick={startGameAction}>
             Start Game!
           </Button>
         )}
 
-        {!isSeated && (
+        {!isSeated && gameState.inProgress && (
+          <Heading>
+            {`currently ${
+              gameState.players &&
+              gameState?.players[gameState?.currentPlayer].userName
+            }'s turn`}
+          </Heading>
+        )}
+
+        {!isSeated && !gameState.inProgress && (
           <Button
             colorScheme={!isSeated ? 'purple' : 'pink'}
             size="md"

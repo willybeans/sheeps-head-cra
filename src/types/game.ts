@@ -26,6 +26,8 @@ export interface ScoreboardProps {
 export interface GameInstance {
   players?: Player[];
   currentCardsOnTable: TableCard[];
+  dealer: number;
+  isStart: boolean;
   currentPlayer: number;
   picker: string;
   secretTeam: string[];

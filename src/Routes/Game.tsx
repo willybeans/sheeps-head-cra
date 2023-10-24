@@ -67,9 +67,6 @@ export const Game = () => {
   return (
     <Box>
       <Box textAlign="center" fontSize="xl">
-        {/* needs to go in a header */}
-        {/* <ColorModeSwitcher justifySelf="flex-end" /> */}
-
         <Grid
           templateAreas={`"header header"
                   "game chat"
@@ -81,12 +78,15 @@ export const Game = () => {
           padding={'5px'}
         >
           <GridItem pl="2" area={'header'}>
-            <Flex direction={'row'} justify={'flex-end'}>
+            <Flex direction={'row'} justify={'space-between'}>
+              <ColorModeSwitcher />
               {user?.username}
             </Flex>
           </GridItem>
           <GridItem pl="2" area={'game'}>
-            <GameBoard userId={user?.id} send={send} gameState={gameState} />
+            {isReady && user && (
+              <GameBoard userId={user.id} send={send} gameState={gameState} />
+            )}
           </GridItem>
           <GridItem pl="2" area={'chat'}>
             <ChatContainer
