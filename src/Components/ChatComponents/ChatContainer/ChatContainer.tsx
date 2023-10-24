@@ -3,6 +3,7 @@ import MessageContainer from '../MessageContainer/MessageContainer';
 import InputBox from '../InputBox/InputBox';
 import { Flex } from '@chakra-ui/react';
 import { ChatFeed, WebSocketSend } from '../../../types';
+import { useColorMode } from '@chakra-ui/react';
 
 const ChatContainer: React.FC<{
   send: WebSocketSend | undefined;
@@ -10,9 +11,10 @@ const ChatContainer: React.FC<{
   userId?: string;
   userName?: string;
 }> = ({ send, chatFeed, userId }) => {
+  const { colorMode } = useColorMode();
   return (
     <Flex
-      bg={'purple.900'}
+      bg={colorMode === 'light' ? 'purple.100' : 'purple.900'}
       direction={'column'}
       justify={'space-between'}
       data-testid={'chat-container-test'}
