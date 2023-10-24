@@ -14,12 +14,15 @@ const UserSeat: React.FC<Player> = player => {
       <Image boxSize={'5rem'} src={Sheep} alt="Sheep" />
       <Box>Score: {player.score}</Box>
       <WonCards cards={player?.wonCards} />
+      <Heading as="h6" size="4xs">
+        Hand
+      </Heading>
       <Flex direction={'row'} paddingLeft={'1rem'}>
         {player?.hand?.map((c, i) => {
           return <Card key={`${c}-${i}`} card="BACK" />;
         })}
       </Flex>
-      <Box height={'7rem'}>
+      <Box marginTop={'0.5rem'} height={'7rem'}>
         {player?.cardToPlay?.card && <Card card={player?.cardToPlay?.card} />}
       </Box>
     </Flex>

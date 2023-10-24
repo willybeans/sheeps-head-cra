@@ -7,11 +7,16 @@ interface Props {
 }
 const WonCards: React.FC<Props> = ({ cards }) => {
   return (
-    <Flex direction={'row'} height={'4rem'} justify={'space-between'}>
+    <Flex
+      direction={'column'}
+      alignItems={'center'}
+      justify={'space-between'}
+      marginBottom={'1rem'}
+    >
       <Heading as="h6" size="4xs">
-        Won Cards:
+        Won Cards
       </Heading>
-      <Flex direction="row" width={'50%'}>
+      <Flex direction="row" maxWidth={'50%'}>
         {cards?.map((c, i) => {
           return <Card key={`${c}-${i}`} card="BACK" />;
         })}

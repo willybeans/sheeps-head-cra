@@ -46,7 +46,10 @@ const GameBoard: React.FC<{
         },
         contentType: 'game'
       });
-      if (send) send(stringified);
+      if (send) {
+        send(stringified);
+        setSelectedCard('');
+      }
     } catch (e) {
       console.error('failed at seatActions', e);
     }
@@ -115,7 +118,7 @@ const GameBoard: React.FC<{
           size="md"
           colorScheme={'blue'}
           visibility={!isSeated ? 'hidden' : 'visible'}
-          isDisabled={selectedCard === '' ? true : false}
+          isDisabled={selectedCard.length === 0 ? true : false}
           onClick={cardAction}
         >
           Play Card
