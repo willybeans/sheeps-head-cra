@@ -26,7 +26,9 @@ describe('UserSeat', () => {
   // });
 
   it('renders an image', () => {
-    const { getByAltText } = render(<UserSeat {...mockPlayer} />);
+    const { getByAltText } = render(
+      <UserSeat player={mockPlayer} isSecretTeam={false} isVisible={false} />
+    );
 
     const imageElement = getByAltText('Sheep');
 
@@ -34,7 +36,9 @@ describe('UserSeat', () => {
   });
 
   it('renders card components with "BACK" card', () => {
-    const { getAllByTitle } = render(<UserSeat {...mockPlayer} />);
+    const { getAllByTitle } = render(
+      <UserSeat player={mockPlayer} isSecretTeam={false} isVisible={false} />
+    );
 
     const backCardElements = getAllByTitle('Back of Card');
 
