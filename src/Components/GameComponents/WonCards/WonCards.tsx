@@ -16,7 +16,7 @@ const WonCards: React.FC<Props> = ({ cards }) => {
       <Heading as="h6" size="4xs">
         Won Cards
       </Heading>
-      <Flex direction="row" maxWidth={'50%'}>
+      <Flex direction="row" maxWidth={'50%'} minHeight={'2rem'}>
         {cards?.map((c, i) => {
           return <Card key={`${c}-${i}`} card="BACK" />;
         })}

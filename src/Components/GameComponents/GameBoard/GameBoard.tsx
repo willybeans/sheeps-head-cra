@@ -1,6 +1,6 @@
 import React, { useState, useEffect, SetStateAction } from 'react';
 import PlayerHand from '../../CardComponents/PlayerHand/PlayerHand';
-import { GameInstance, WebSocketSend } from '../../../types';
+import { GameInstance, WebSocketSend, Player } from '../../../types';
 import UserSeat from '../UserSeat/UserSeat';
 import {
   Button,
@@ -19,6 +19,7 @@ import {
 import { getPlayerIndex } from '../../../utils/helpers';
 import { convertCardToEnglish } from '../../../GameLogic/gameUtil';
 import { blindCards } from '../../../utils/helpers';
+import { game } from '../../../GameLogic/game';
 
 const GameBoard: React.FC<{
   send: WebSocketSend | undefined;
@@ -265,8 +266,15 @@ if you arent seated, just say whos turn it is, period
         )}
       </Flex>
       <Flex direction={'row'} justify={'space-around'}>
-        {gameState?.players?.map((player, i) => {
-          return <UserSeat key={`${player.id}`} {...player} />;
+        {gameState?.players?.map((player: Player, i) => {
+          return (
+            <UserSeat
+              isVisible={gameState.secretTeam.indexOf(userId || '') !== -1}
+              isSecretTeam={gameState.secretTeam.indexOf(player.id) !== -1}
+              key={`${player.id}`}
+              player={player}
+            />
+          );
         })}
       </Flex>
 
