@@ -5,7 +5,7 @@ import { WebSocketSend } from '../../../types';
 import InputWrapper from '../InputWrapper/InputWrapper';
 
 const InputBox: React.FC<{
-  send: WebSocketSend | undefined;
+  send: WebSocketSend | ((userInput: string) => Promise<void>) | undefined;
   userId?: string;
 }> = props => {
   const userInputRef = useRef<HTMLInputElement | null>(null);
@@ -16,18 +16,23 @@ const InputBox: React.FC<{
   };
 
   const onSubmit = () => {
-    let stringified: string = '';
-    try {
-      stringified = JSON.stringify({
-        chatMessage: userInputRef?.current?.value,
-        contentType: 'chat',
-        // grab from cookie
-        userId: props?.userId
-      });
-      if (props.send) props.send(stringified);
-    } catch (e) {
-      console.error('parse failed InputBox');
+    if (props.userId !== undefined) {
+      let stringified: string = '';
+      try {
+        stringified = JSON.stringify({
+          chatMessage: userInputRef?.current?.value,
+          contentType: 'chat',
+          // grab from cookie
+          userId: props?.userId
+        });
+        if (props.send) props.send(stringified);
+      } catch (e) {
+        console.error('parse failed InputBox');
+      }
+    } else {
+      if (props.send) props?.send(userInputRef?.current?.value || '');
     }
+
     if (userInputRef?.current) userInputRef.current.value = '';
   };
 
