@@ -91,7 +91,7 @@ export const Landing = () => {
             Please input a game name
             <Input
               onChange={e => setUserInput(e.target.value)}
-              placeholder="medium size"
+              placeholder="game name here"
               size="md"
             />
           </Flex>
