@@ -9,7 +9,7 @@ import { User } from '../types';
 
 export const Game = () => {
   const [isReady, receivedMessages, gameState, send] = useWebSocket(
-    'ws://localhost:8080/games/310d5995-7611-4888-9eb3-ecffc633c8e5'
+    `ws://localhost:8080${document.location.pathname}`
   );
   const [user, setUser] = useState<User>(); // userId , setUserId
 
@@ -24,13 +24,14 @@ export const Game = () => {
     // set that here
     // otherwise set it here
     const storedUser = localStorage.getItem('user');
+
     let userObj;
-    try {
-      if (storedUser !== '{}') {
+    if (storedUser !== '{}' && storedUser !== null) {
+      try {
         userObj = JSON.parse(storedUser || '');
+      } catch (e) {
+        console.error(e);
       }
-    } catch (e) {
-      console.error(e);
     }
     if (storedUser !== null && userObj !== undefined) {
       (async function () {
@@ -50,13 +51,14 @@ export const Game = () => {
           `http://localhost:8080/addUser?user_name=${newName}`
         );
 
-        const newUser: User = await response.json();
+        const newUser = await response.json();
 
         let stringify = '';
         try {
           stringify = JSON.stringify({ ...newUser });
           localStorage.setItem('user', stringify);
-          setUser({ ...newUser });
+
+          setUser({ ...newUser['user'] });
         } catch (e) {
           console.error(e);
         }
