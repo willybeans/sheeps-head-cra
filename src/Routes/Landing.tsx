@@ -13,6 +13,8 @@ import { ModalComponent } from '../Components/ModalComponent';
 import { FaPlusCircle, FaDoorOpen } from 'react-icons/fa';
 import InputBox from '../Components/ChatComponents/InputBox/InputBox';
 import { useNavigate } from 'react-router-dom';
+import { getEnv } from '../utils/helpers';
+
 const removeSlug = (inputString: string) => {
   return inputString.split('-').join(' ');
 };
@@ -30,7 +32,7 @@ export const Landing = () => {
   const navigate = useNavigate();
   useEffect(() => {
     (async function () {
-      const response = await fetch(`http://localhost:8080/getAllGames`);
+      const response = await fetch(`${getEnv}/getAllGames`);
       const gameList = await response.json();
 
       if (gameList) {
@@ -48,20 +50,13 @@ export const Landing = () => {
 
   const createGameAction = async () => {
     const slugCase = addSlug(userInput);
-    const response = await fetch(
-      `http://localhost:8080/addGame?name=${slugCase}`
-    );
+    const response = await fetch(`${getEnv}/addGame?name=${slugCase}`);
     const newGame = await response.json();
     if (newGame) {
       newGame.name = removeSlug(newGame.name);
       setGameList(prev => [...prev, newGame]);
     }
     setUserInput('');
-    // if (newGame) {
-    //   const response = await fetch(`http://localhost:8080/getAllGames`);
-    //   const gameList = await response.json();
-    //   if (gameList) setGameList([...gameList.game]);
-    // }
   };
 
   const joinGame = (gameId: string) => {

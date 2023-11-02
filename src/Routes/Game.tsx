@@ -6,13 +6,17 @@ import GameBoard from '../Components/GameComponents/GameBoard/GameBoard';
 import ChatContainer from '../Components/ChatComponents/ChatContainer/ChatContainer';
 import { generate } from '../utils/nameGen';
 import { User } from '../types';
+import { getEnv } from '../utils/helpers';
 
 export const Game = () => {
   const [isReady, receivedMessages, gameState, send] = useWebSocket(
-    `ws://localhost:8080${document.location.pathname}`
+    `ws://${
+      process.env.NODE_ENV === 'production'
+        ? 'sheepshead-ts-api.onrender.com'
+        : 'localhost:8080'
+    }${document.location.pathname}`
   );
   const [user, setUser] = useState<User>(); // userId , setUserId
-
   useEffect(() => {
     if (isReady) {
     }
@@ -36,7 +40,7 @@ export const Game = () => {
     if (storedUser !== null && userObj !== undefined) {
       (async function () {
         const response = await fetch(
-          `http://localhost:8080/getUser?id=${userObj?.user?.id}`
+          `${getEnv}/getUser?id=${userObj?.user?.id}`
         );
         const dbUser = await response.json();
         if (dbUser) setUser({ ...dbUser.user });
@@ -47,9 +51,7 @@ export const Game = () => {
       // add random user name generator?
       (async function () {
         const newName = generate();
-        const response = await fetch(
-          `http://localhost:8080/addUser?user_name=${newName}`
-        );
+        const response = await fetch(`${getEnv}/addUser?user_name=${newName}`);
 
         const newUser = await response.json();
 
