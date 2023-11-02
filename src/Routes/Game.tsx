@@ -10,7 +10,7 @@ import { getEnv } from '../utils/helpers';
 
 export const Game = () => {
   const [isReady, receivedMessages, gameState, send] = useWebSocket(
-    `ws://${
+    `wss://${
       process.env.NODE_ENV === 'production'
         ? 'sheepshead-ts-api.onrender.com'
         : 'localhost:8080'
